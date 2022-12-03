@@ -9,14 +9,13 @@ namespace CrytpWallet.Assets
 {
     public sealed class NonFungableAsset:Asset
     {
-            public NonFungableAsset() : base() { }
-            public Guid ItsFungableValue { get; }
-            public double ValueInDollar { get; }
-            public double ValueInFungable { get; }
+            public NonFungableAsset(double valueInDollar) : base(valueInDollar) { }
+            public Guid ItsFungableValue { get; init; }
+            public double ValueInFungable { get; init;  }
         public override void UpdateValue()
         {
             
-            OldValueInDollar = ValueInDolar;
+            OldValueInDollar = ValueInDollar;
             //Mijenjanje vrijenosti radim izvan objekta pošto nemam access cijeloj listi pa ne mogu preko adrese dobiti želejeni objekt
         }
         public override void PrintAsset()
@@ -24,7 +23,7 @@ namespace CrytpWallet.Assets
             base.PrintAsset();
             Console.WriteLine($"Fungable asset: {ItsFungableValue}\n" +
                 $"\nKoličina fungable assera {ValueInFungable}" +
-                $"Mijenjanje vrijednosti: {(ValueInDolar - OldValueInDollar) / 100}%");
+                $"Mijenjanje vrijednosti: {(ValueInDollar - OldValueInDollar) / 100}%");
         }
     }
     }
@@ -37,4 +36,9 @@ namespace CrytpWallet.Assets
  * Funkcije nutar klase ili moze i van
  * Smijemo li koristiti global
  * Jeu li formati konačni ili izmenjivi
+ * Smijemo li korisitit konstruktore
+ *Dodaj bolji output
+ *Provjeravaj casting
+ *Pokusaj skuzit polimorfizam
+ *Dodaj predefinirane gluposti
  */

@@ -9,11 +9,11 @@ namespace CrytpWallet.Classes.Transactions
     public sealed  class FungableTransaction : Transaction
     {
         public FungableTransaction() : base() { }
-        public Guid AdressOfToken { get; }
-        public double StartBalanceSender { get; }
-        public double StartBalanceReceiver { get; }
-        public double EndBalanceSender { get; }
-        public double EndBalanceReceiver { get; }
+        public Guid AdressOfToken { get; init; }
+        public double StartBalanceSender { get; init; }
+        public double StartBalanceReceiver { get; init; }
+        public double EndBalanceSender { get; init; }
+        public double EndBalanceReceiver { get; init; }
         public override void PrintTrasnsaction()
         {
             base.PrintTrasnsaction();

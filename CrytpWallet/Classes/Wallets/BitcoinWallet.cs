@@ -11,7 +11,7 @@ namespace CrytpWallet.Classes.Wallets
 {
     public sealed class BitcoinWallet:Wallet, IFungable
     {
-        public BitcoinWallet() : base() { }
+        public BitcoinWallet() : base() { AllowedAssets = new List<Guid>(); }
         public static List<Guid> AllowedAssets { get; set; }
         public void GetFungable(FungableAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
         {
@@ -22,7 +22,7 @@ namespace CrytpWallet.Classes.Wallets
             else
             {
                 AmountOfAssets[assetToAdd.Adress] += amount;
-                totalValue += amount * assetToAdd.ValueInDollar;
+                totalValue -= amount * assetToAdd.ValueInDollar;
             }
             Transactions.Add(TransactionAdress);
 

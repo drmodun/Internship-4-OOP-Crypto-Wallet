@@ -12,10 +12,14 @@ namespace CrytpWallet.Classes.Wallets
 
     public sealed class SolanaWallet : Wallet, IFungable,INonFungable
     {
-        public SolanaWallet() : base() { }
-        public static List<Guid> AllowedAssetsFungable { get; }
-        public static List<Guid> AllowedNonFungable { get; }
-        public List<Guid> HeldNFT { get; }
+        public SolanaWallet() : base() {
+            AllowedAssetsFungable = new List<Guid>();
+            AllowedNonFungable = new List<Guid>();
+            HeldNFT = new List<Guid>();
+        }
+        public static List<Guid> AllowedAssetsFungable { get; protected set; }
+        public static List<Guid> AllowedNonFungable { get; protected set; }
+        public List<Guid> HeldNFT { get; init; }
         public void GetFungable(FungableAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress )
         {
             if (newToken == true)

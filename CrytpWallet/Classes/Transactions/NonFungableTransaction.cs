@@ -10,7 +10,7 @@ namespace CrytpWallet.Classes.Transactions
     {
         public NonFungableTransaction() : base() { }
         
-        public  Guid AdressOfNFT { get; }
+        public  Guid AdressOfNFT { get; init; }
         public override void PrintTrasnsaction()
         {
             base.PrintTrasnsaction();

@@ -8,11 +8,16 @@ namespace CrytpWallet.Classes.Transactions
 {
     public abstract class Transaction
     {
-        public  Guid Id { get; }
-        public  Guid Sender { get; }
-        public  Guid Receiver { get; }
-        public  DateTime TimeOfTransaction { get; }
-        public  bool Recalled { get; }
+        public  Guid Id { get; init; }
+        public  Guid Sender { get; init; }
+        public  Guid Receiver { get; init; }
+        public  DateTime TimeOfTransaction { get; init; }
+        public  bool Recalled { get; protected set;}
+        public Transaction()
+        {
+            Id = Guid.NewGuid();
+            Recalled = false;
+        }
         public virtual void PrintTrasnsaction()
         {
             Console.WriteLine($"Id transakcije: {Id}\n" +
