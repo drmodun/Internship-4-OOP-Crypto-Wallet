@@ -8,8 +8,16 @@ namespace CrytpWallet.Assets
 {
     public abstract class Asset
     {
-        public Guid Adresa { get; set; }
+        public Guid Adress { get; }
         public string Name { get; }
-        public double ValueInDolar { get; }
+        public double ValueInDolar { get; protected set; }
+        public double OldValueInDollar { get; protected set; }
+        public virtual void PrintAsset()
+        {
+            Console.WriteLine($"Adresa asseta: {Adress}\n" +
+                $"Ime asseta: {Name}\n" +
+                $"Vrijednost: {ValueInDolar}\n");
+        }
+        public abstract void UpdateValue();
     }
 }

@@ -10,9 +10,16 @@ namespace CrytpWallet.Classes.Wallets
 {
     public abstract class Wallet
     {
-        public abstract Guid Adress { get; }
-        public abstract Dictionary<FungableAsset, int> AmountOfAssets{ get; }
-        public abstract Dictionary<Guid, Transaction> Transaction { get; }
-
+        public  Guid Adress { get; }
+        public  Dictionary<Guid, int> AmountOfAssets{ get; }
+        public  List<Guid> Transactions { get; }
+        public double totalValue { get; protected set; }
+        public double oldValue { get; protected set; }
+        public virtual void PrintWallet()
+        {
+            Console.WriteLine($"Adresa walleta: {Adress}" +
+                $"\nTotalna vrijednost: {totalValue}" +
+                $"\nTotalna promjena vrijednosti {(totalValue-oldValue)/100}%");
+        }
     }
 }
