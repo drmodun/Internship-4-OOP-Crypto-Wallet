@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Transactions
 {
-    public sealed  class FungableTransaction : Transaction
+    public sealed  class FungibleTransaction : Transaction
     {
-        public FungableTransaction() : base() { }
+        public FungibleTransaction() : base() { }
         public Guid AdressOfToken { get; init; }
         public double StartBalanceSender { get; init; }
         public double StartBalanceReceiver { get; init; }

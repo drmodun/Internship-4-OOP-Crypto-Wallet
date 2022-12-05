@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Interfaces
 {
-    public interface INonFungable
+    public interface INonFungible
     {
-        void GetNFT(NonFungableAsset assetToAdd, Guid TransactionAdress);
-        void SendNFT(NonFungableAsset assetToRemove, Guid TransactionAdress);
+        void GetNFT(NonFungibleAsset assetToAdd, Guid TransactionAdress);
+        void SendNFT(NonFungibleAsset assetToRemove, Guid TransactionAdress);
     }
 }

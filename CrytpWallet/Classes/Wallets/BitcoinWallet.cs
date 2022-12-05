@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Wallets
 {
-    public sealed class BitcoinWallet:Wallet, IFungable
+    public sealed class BitcoinWallet:Wallet, IFungible
     {
         public BitcoinWallet() : base() { AllowedAssets = new List<Guid>(); }
         public static List<Guid> AllowedAssets { get; set; }
-        public void GetFungable(FungableAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
+        public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
         {
             if (newToken == true)
             {
@@ -27,7 +27,7 @@ namespace CrytpWallet.Classes.Wallets
             Transactions.Add(TransactionAdress);
 
         }
-        public void SendFungable(FungableAsset assetToRemove, int amount, Guid TransactionAdress)
+        public void SendFungible(FungibleAsset assetToRemove, int amount, Guid TransactionAdress)
         {
             AmountOfAssets[assetToRemove.Adress] -= amount;
             totalValue -= amount * assetToRemove.ValueInDollar;

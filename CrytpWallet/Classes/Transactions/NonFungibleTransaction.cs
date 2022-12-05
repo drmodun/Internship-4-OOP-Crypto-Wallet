@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Transactions
 {
-    public  class NonFungableTransaction:Transaction
+    public  class NonFungibleTransaction:Transaction
     {
-        public NonFungableTransaction() : base() { }
+        public NonFungibleTransaction() : base() { }
         
         public  Guid AdressOfNFT { get; init; }
         public override void PrintTrasnsaction()

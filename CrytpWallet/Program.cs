@@ -1,15 +1,13 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using CrytpWallet.Assets;
+using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Wallets;
 
 Console.WriteLine("Hello, World!");
 //main loop
 bool loop=true;
-var ListOfWallets = new List<Wallet>();
-var ListOfBitcoinWallets=new List<BitcoinWallet>();
-var ListOfEtheriumWallets = new List<EtherumWallet>();
-var ListOfSolanaWallets=new List<SolanaWallet>();
-var BTC = new FungableAsset(90)
+
+var BTC = new FungibleAsset(90)
 {
     Adress = Guid.NewGuid(),
     Name = "Bitcoin",
@@ -47,21 +45,21 @@ void CreateWallet()
         switch (choice){
             case "1":
                 var newWallet = new BitcoinWallet();
-                ListOfBitcoinWallets.Add(newWallet);
-                ListOfWallets.Add(newWallet);
+                GlobalWallets.AllBitcoinWallets.Add(newWallet);
+                GlobalWallets.Wallets.Add(newWallet);
                 Console.WriteLine($"Wallet id {newWallet.Adress} napravljen");
                 break;
             case "2":
                 var newWalletEtherum = new EtherumWallet();
-                ListOfEtheriumWallets.Add(newWalletEtherum);
-                ListOfWallets.Add(newWalletEtherum);
+                GlobalWallets.AllEtherumWallets.Add(newWalletEtherum);
+                GlobalWallets.Wallets.Add(newWalletEtherum);
                 Console.WriteLine($"Wallet id {newWalletEtherum.Adress} napravljen");
 
                 break;
             case "3":
                 var newSolanaWallet = new SolanaWallet();
-                ListOfSolanaWallets.Add(newSolanaWallet);
-                ListOfWallets.Add(newSolanaWallet);
+                GlobalWallets.AllSolanaWallets.Add(newSolanaWallet);
+                GlobalWallets.Wallets.Add(newSolanaWallet);
                 Console.WriteLine($"Wallet id {newSolanaWallet.Adress} napravljen");
 
                 break;
@@ -70,13 +68,14 @@ void CreateWallet()
             default: Console.WriteLine("Neispravan input");
                     break;
         }
+        Console.Clear();
         Console.WriteLine("Pretisnite bilo koju tipku za nastavak");
         Console.ReadLine();
     }
 }
 void CheckWallet()
 {
-    foreach(var item in ListOfBitcoinWallets)
+    foreach(var item in GlobalWallets.AllBitcoinWallets)
     {
         item.PrintWallet();
     }

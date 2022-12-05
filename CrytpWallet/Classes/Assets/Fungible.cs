@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Assets
 {
-    public sealed class FungableAsset : Asset  
+    public sealed class FungibleAsset : Asset  
     {
-        public FungableAsset(double valueInDollar) : base(valueInDollar) { }
+        public FungibleAsset(double valueInDollar) : base(valueInDollar) { }
         public string Label { get; init; }
         public override void UpdateValue()
         {

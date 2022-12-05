@@ -20,6 +20,7 @@ namespace CrytpWallet.Assets
         }
         public Asset(double valueInDollar)
         {
+            Adress=Guid.NewGuid();
             ValueInDollar = valueInDollar;
             OldValueInDollar = 0;
         }
