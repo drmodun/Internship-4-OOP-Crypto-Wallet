@@ -2,7 +2,6 @@
 using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Wallets;
-
 Console.WriteLine("Hello, World!");
 //main loop
 bool loop=true;
