@@ -9,7 +9,9 @@ namespace CrytpWallet.Assets
 {
     public sealed class FungibleAsset : Asset  
     {
-        public FungibleAsset(double valueInDollar) : base() { ValueInDollar = valueInDollar; OldValueInDollar = 0; }
+        public FungibleAsset(double valueInDollar) : base() { 
+            ValueInDollar = valueInDollar; 
+            OldValueInDollar = valueInDollar; }
         public string Label { get; init; }
         public override void UpdateValue()
         {

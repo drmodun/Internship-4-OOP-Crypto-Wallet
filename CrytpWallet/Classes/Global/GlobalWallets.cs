@@ -17,17 +17,14 @@ namespace CrytpWallet.Classes.Global
         public static List<EtherumWallet> AllEtherumWallets { get; private set; }
         public static List<SolanaWallet> AllSolanaWallets { get; private set;  }
 
-        public static List<Asset> AllAssets { get; private set; }
+        //public static List<Asset> AllAssets { get; private set; }
         public static List<FungibleAsset> AllFungibleAssets { get; private set; }
         public static List<NonFungibleAsset> AllNonFungibleAssets { get; private set; }
         
         static GlobalWallets()
         {
-            Wallets = new List<Wallet>();
-            AllBitcoinWallets = new List<BitcoinWallet>();
-            AllEtherumWallets = new List<EtherumWallet>();
-            AllSolanaWallets = new List<SolanaWallet>();
-            AllAssets = new List<Asset>();
+            
+            //AllAssets = new List<Asset>();
 
             AllFungibleAssets = new List<FungibleAsset>()
             {
@@ -148,13 +145,39 @@ namespace CrytpWallet.Classes.Global
                 //Add 5 more
 
             };
+            AllBitcoinWallets = new List<BitcoinWallet>()
+            {
+                new BitcoinWallet(),
+                new BitcoinWallet(),
+                new BitcoinWallet(),
+            };
+            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), 20);
+            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), 20);
+            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("AUR"), 20);
+
+            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), 2);
+            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), 20);
+            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), 10);
+
+            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), 20);
+            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), 9);
+            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("AUR"), 123);
+
+            AllBitcoinWallets[0].CalculateValue();
+            AllBitcoinWallets[1].CalculateValue();
+            AllBitcoinWallets[2].CalculateValue();
+
+            AllEtherumWallets = new List<EtherumWallet>();
+            AllSolanaWallets = new List<SolanaWallet>();
+            Wallets = new List<Wallet>();
+            //add 6 more wallets
 
         }
-        private static Guid GetAdressOfFungibleToken(string label)
+        public static Guid GetAdressOfFungibleToken(string label)
         {
             foreach(var item in AllFungibleAssets)
             {
-                if (item.Name == label)
+                if (item.Label == label)
                     return item.Adress;
             }
             return Guid.Empty;
@@ -167,6 +190,38 @@ namespace CrytpWallet.Classes.Global
                     return item;
             }
             return null;
+        }
+        public static Guid GetAdressOfNonFungibleToken(string label)
+        {
+            foreach (var item in AllNonFungibleAssets)
+            {
+                if (item.Name == label)
+                    return item.Adress;
+            }
+            return Guid.Empty;
+        }
+        public static NonFungibleAsset GetNonFungibleAssetByAdress(Guid adress)
+        {
+            foreach (var item in AllNonFungibleAssets)
+            {
+                if (item.Adress == adress)
+                    return item;
+            }
+            return null;
+        }
+        //For debugging sake, will most likely delete later
+        public static void PrintAll()
+        {
+            foreach (var item in AllFungibleAssets)
+            {
+                item.PrintAsset();
+                Console.WriteLine("");
+            }
+            foreach (var item in AllNonFungibleAssets)
+            {
+                item.PrintAsset();
+                Console.WriteLine("");
+            }
         }
     }
 }

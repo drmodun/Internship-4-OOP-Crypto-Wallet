@@ -16,7 +16,7 @@ namespace CrytpWallet.Assets
         {
             Console.WriteLine($"Adresa asseta: {Adress}\n" +
                 $"Ime asseta: {Name}\n" +
-                $"Vrijednost: {ValueInDollar}\n");
+                $"Vrijednost: {ValueInDollar} $");
         }
         public Asset()
         {

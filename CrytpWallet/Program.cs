@@ -4,6 +4,7 @@ using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Wallets;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 Console.WriteLine("Hello, World!");
 //main loop
@@ -16,7 +17,17 @@ var BTC = new FungibleAsset(90)
     Label="BTC"
 
 };
-
+//GlobalWallets.PrintAll();
+Console.WriteLine(EtherumWallet.AllowedNonFungibleEtherum.Count);
+foreach (var item in EtherumWallet.AllowedAssetsFungibleEtherum)
+{
+    Console.WriteLine(GlobalWallets.GetFungibleAssetByAdress(item).Name);
+}
+foreach (var item in EtherumWallet.AllowedNonFungibleEtherum)
+{
+    Console.WriteLine(GlobalWallets.GetNonFungibleAssetByAdress(item).Name);
+}
+Console.ReadLine();
 while (loop)
 {
     Console.Clear();

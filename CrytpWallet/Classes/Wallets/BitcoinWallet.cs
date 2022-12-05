@@ -12,11 +12,23 @@ namespace CrytpWallet.Classes.Wallets
 {
     public sealed class BitcoinWallet:Wallet, IFungible
     {
-        public BitcoinWallet() : base() { AllowedAssets = new List<Guid>(); }
-        public static List<Guid> AllowedAssets { get; set; }
+        public BitcoinWallet() : base() { 
+            
+        }
+        static BitcoinWallet()
+        {
+            AllowedAssets = new List<Guid>()
+            {
+                GlobalWallets.GetAdressOfFungibleToken("BTC"),
+                GlobalWallets.GetAdressOfFungibleToken("GRC"),
+                GlobalWallets.GetAdressOfFungibleToken("AUR"),
+                GlobalWallets.GetAdressOfFungibleToken("XRP")
+            };
+        }
+        public static List<Guid> AllowedAssets { get; private set; }
         public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
         {
-            if (newToken == true)
+            if (newToken)
             {
                 AmountOfAssets.Add(assetToAdd.Adress, amount);
             }

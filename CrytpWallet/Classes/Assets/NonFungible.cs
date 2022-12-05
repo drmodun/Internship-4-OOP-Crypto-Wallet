@@ -15,6 +15,11 @@ namespace CrytpWallet.Assets
 
             ValueInFungible = valueInFungible;
             ItsFungible = itsFungible;
+            if (GlobalWallets.GetFungibleAssetByAdress(itsFungible) == null)
+            {
+                Console.WriteLine("Wrong");
+                return;
+            }
             ValueInDollar = GlobalWallets.GetFungibleAssetByAdress(itsFungible).ValueInDollar*valueInFungible;
             OldValueInDollar = 0;
         }
