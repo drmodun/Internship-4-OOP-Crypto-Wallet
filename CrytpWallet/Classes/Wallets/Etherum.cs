@@ -13,11 +13,11 @@ namespace CrytpWallet.Classes.Wallets
     {
         public EtherumWallet() : base() {
             AllowedAssetsFungible = new List<Guid>();
-            AllowedNonFungible = new List<Guid>();
+            AllowedNonFungibleEtherum = new List<Guid>();
             HeldNFT = new List<Guid>();
         }
         public static List<Guid> AllowedAssetsFungible { get; protected set; }
-        public static List<Guid> AllowedNonFungible { get; protected set; }
+        public static List<Guid> AllowedNonFungibleEtherum { get; protected set; }
         public List<Guid> HeldNFT { get; init; }
         public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
         {

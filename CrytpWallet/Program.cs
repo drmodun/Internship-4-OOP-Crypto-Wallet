@@ -2,6 +2,9 @@
 using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Wallets;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
+
 Console.WriteLine("Hello, World!");
 //main loop
 bool loop=true;
@@ -74,9 +77,83 @@ void CreateWallet()
 }
 void CheckWallet()
 {
-    foreach(var item in GlobalWallets.AllBitcoinWallets)
+    foreach (var item in GlobalWallets.Wallets)
     {
-        item.PrintWallet();
+        if (GlobalWallets.AllBitcoinWallets.Find(x => x.Adress == item.Adress) != null)
+        {
+            ((BitcoinWallet)item).PrintWallet();
+        }
+        else if (GlobalWallets.AllEtherumWallets.Find(x => x.Adress == item.Adress) != null)
+        {
+            ((EtherumWallet)item).PrintWallet();
+        }
+
+        else
+        {
+            ((SolanaWallet)item).PrintWallet();
+        }
     }
-    Console.ReadLine();
-}
+    Console.WriteLine("Unesite kojem walletu želite pristupiti");
+    var userWalletAdress = Console.ReadLine();
+    if (GlobalWallets.Wallets.Find(x=>x.Adress.ToString() == userWalletAdress) == null)
+    {
+        Console.WriteLine("Nije upisani pravi wallet");
+        Console.WriteLine("Pretisnite bilo kojio gumb za vraćanje na main menu");
+        Console.ReadLine();
+        return;
+    }
+    var userWallet = GlobalWallets.Wallets.Find(x => x.Adress.ToString() == userWalletAdress);
+    
+    if ( userWallet as BitcoinWallet != null)
+    {
+        userWallet=(BitcoinWallet)userWallet;
+    }
+    else if(userWallet as EtherumWallet !=null)
+    {
+        userWallet =(EtherumWallet)userWallet;
+    }
+    else
+    {
+        userWallet = (SolanaWallet)userWallet;
+    }
+    Console.Clear();
+    while (true)
+    {
+        Console.Clear();
+        Console.WriteLine("Izaberite što želite sa walletom");
+        Console.WriteLine("1 - Portfolio" +
+            "\n2 - Etherum Wallet" +
+            "\n3 - Solana Wallet");
+        var choice = Console.ReadLine();
+        switch (choice)
+        {
+            case "1":
+                Console.WriteLine($"Ukupna vrijendnost: {userWallet.totalValue}");
+                foreach (var item in userWallet.AmountOfAssets)
+                {
+                    Console.WriteLine($"Količina: {item.Value}");
+                    GlobalWallets.AllFungibleAssets.Find(x => x.Adress == item.Key).PrintAsset();
+                    Console.WriteLine(" ");
+                }
+                if (userWallet is EtherumWallet)
+                {
+                    foreach (var item in ((EtherumWallet)userWallet).HeldNFT)
+                    {
+                        GlobalWallets.AllNonFungibleAssets.Find(x => x.Adress == item).PrintAsset();
+                        Console.WriteLine(" ");
+                    }
+                }
+                else if (userWallet is SolanaWallet)
+                {
+                    foreach (var item in ((SolanaWallet)userWallet).HeldNFT)
+                    {
+                        GlobalWallets.AllNonFungibleAssets.Find(x => x.Adress == item).PrintAsset();
+                        Console.WriteLine(" ");
+                    }
+                }
+                break;
+        }
+
+        }
+        Console.ReadLine();
+    }

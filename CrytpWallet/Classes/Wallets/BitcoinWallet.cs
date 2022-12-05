@@ -1,4 +1,5 @@
 ﻿using CrytpWallet.Assets;
+using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace CrytpWallet.Classes.Wallets
         {
             Console.WriteLine("Bitcoin Wallet");
             base.PrintWallet();
+            
 
         }
     }

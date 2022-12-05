@@ -18,11 +18,9 @@ namespace CrytpWallet.Assets
                 $"Ime asseta: {Name}\n" +
                 $"Vrijednost: {ValueInDollar}\n");
         }
-        public Asset(double valueInDollar)
+        public Asset()
         {
             Adress=Guid.NewGuid();
-            ValueInDollar = valueInDollar;
-            OldValueInDollar = 0;
         }
         public abstract void UpdateValue();
     }

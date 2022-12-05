@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CrytpWallet.Classes.Global;
 
 namespace CrytpWallet.Classes.Wallets
 {
@@ -26,6 +27,14 @@ namespace CrytpWallet.Classes.Wallets
             Console.WriteLine($"Adresa walleta: {Adress}" +
                 $"\nTotalna vrijednost: {totalValue}" +
                 $"\nTotalna promjena vrijednosti {(totalValue-oldValue)/100}%");
+        }
+        public virtual void PrintWalletCOntents()
+        {
+            foreach (var item in AmountOfAssets)
+            {
+                GlobalWallets.AllFungibleAssets.Find(x => x.Adress == item.Key).PrintAsset();
+                Console.WriteLine(" ");
+            }
         }
     }
 }
