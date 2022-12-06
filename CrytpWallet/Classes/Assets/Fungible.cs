@@ -15,15 +15,17 @@ namespace CrytpWallet.Assets
         public string Label { get; init; }
         public override void UpdateValue()
         {
+            var old = ValueInDollar;
             Random random = new Random();
             decimal PriceChange = random.Next(-5, 5)/(decimal)200;
             ValueInDollar +=ValueInDollar*PriceChange;
+            Console.WriteLine($"Value od {Label} changed from {old}$ to {ValueInDollar}$");
         }
         public override void PrintAsset()
         {
             base.PrintAsset();
             Console.WriteLine($"Oznaka: {Label}\n" +
-                $"Mijenjanje vrijednosti: {((ValueInDollar - OldValueInDollar) / OldValueInDollar )*100}%");
+                $"Mijenjanje vrijednosti (jednog): {((ValueInDollar - OldValueInDollar) / OldValueInDollar )*100}%");
             OldValueInDollar = ValueInDollar;
 
         }

@@ -308,20 +308,34 @@ namespace CrytpWallet.Classes.Global
                 Console.WriteLine("");
             }
         }
-        public static void AdressPrint()
+        public static void AdressPrint(Guid adress)
         {
-            foreach (var item in AllFungibleAssets)
+            Console.WriteLine("Mogući asseti");
+            Console.WriteLine("Fungible asseti:");
+            var wallet = GetWalletByAdress(adress.ToString());
+            foreach(var item in wallet.AmountOfAssets)
             {
-                Console.WriteLine($"{item.Name}: {item.Adress}");
+                var asset = GetFungibleAssetByAdress(item.Key);
+                Console.WriteLine($"Fungible asset {asset.Name} ({asset.Label}), kolicina {item.Value} i vrijendost {asset.ValueInDollar}$: {item.Key}");
             }
-            Console.WriteLine(" ");
-            foreach(var item in AllNonFungibleAssets)
+            Console.WriteLine("");
+            Console.WriteLine("NonFungible asseti:");
+            if (wallet as DoubleWallet != null)
             {
-                Console.WriteLine($"{item.Name} {item.Adress}");
+                var walletNft= wallet as DoubleWallet;
+                foreach(var item in walletNft.HeldNFT)
+                {
+                    var asset = GetNonFungibleAssetByAdress(item);
+                    Console.WriteLine($"NonFungible asset {asset.Name}, vrijednosti {asset.ValueInFungible} {GetFungibleAssetByAdress(asset.ItsFungible).Label} ili {asset.ValueInDollar}$: {item}");
+                }
             }
         }
         public static void ReCalculateAllWallets()
         {
+            foreach(var item in AllNonFungibleAssets)
+            {
+                item.UpdateValue();
+            }
             foreach (var item in AllBitcoinWallets)
             { item.CalculateValue(); }
             foreach (var item in AllEtherumWallets)

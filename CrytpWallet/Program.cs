@@ -138,6 +138,7 @@ void CheckWallet()
     var loop = 1;
     while (loop==1)
     {
+        GlobalWallets.ReCalculateAllWallets();
         Console.Clear();
         Console.WriteLine("Izaberite što želite sa walletom");
         Console.WriteLine("1 - Portfolio" +
@@ -152,9 +153,10 @@ void CheckWallet()
 
                 foreach (var item in userWallet.AmountOfAssets)
                 {
+                    
+                    GlobalWallets.GetFungibleAssetByAdress(item.Key).PrintAsset();
                     Console.WriteLine($"Vrijednost (ukupna): {GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value}$ ");
                     Console.WriteLine($"Količina: {item.Value}");
-                    GlobalWallets.GetFungibleAssetByAdress(item.Key).PrintAsset();
                     Console.WriteLine(" ");
                 }
 
@@ -215,11 +217,11 @@ void CheckWallet()
                 }
                 Console.WriteLine("Upišite adresu asseta kojeg želite transferati");
                 Console.WriteLine("");
-                GlobalWallets.AdressPrint();
+                GlobalWallets.AdressPrint(userWallet.Adress);
                 Console.WriteLine("");
                 var assetToTransferAdress = Console.ReadLine();
                 var found = 0;
-                foreach (var item in receivingWallet.AmountOfAssets)
+                foreach (var item in userWallet.AmountOfAssets)
                 {
                     if (assetToTransferAdress == item.Key.ToString())
                     {
@@ -242,6 +244,7 @@ void CheckWallet()
                         {
                             Console.WriteLine("Upisani netočna količina");
                             Console.WriteLine("Upišite bilo koju tipku za nastavak");
+                            Console.WriteLine(item.Value);
                             Console.ReadLine();
                             found = 2;
                             break;
@@ -285,7 +288,7 @@ void CheckWallet()
                 {
                     DoubleWallet userWalletNFT = userWallet as DoubleWallet;
                     DoubleWallet receivingWalletNFT= receivingWallet as DoubleWallet;
-                    if (userWalletNFT != null && receivingWallet!=null )
+                    if (userWalletNFT != null && receivingWallet != null)
                     {
                         foreach (var item in userWalletNFT.HeldNFT)
                         {
@@ -306,6 +309,8 @@ void CheckWallet()
                                     Receiver = receivingWallet.Adress,
 
                                 };
+                                GlobalWallets.GetFungibleAssetByAdress(assetToTransfer.ItsFungible).UpdateValue();
+                                assetToTransfer.UpdateValue();
                                 userWalletNFT.SendNFT(assetToTransfer);
                                 receivingWalletNFT.GetNFT(assetToTransfer);
                                 userWallet.Transactions.Add(nonFungibleTransaction.Id);
@@ -313,8 +318,13 @@ void CheckWallet()
                                 Console.WriteLine("Uspješno napravljen non fungible tranfer");
                                 Console.WriteLine("Pretisinte bilo koju tipku za nastavak");
                                 Console.ReadLine();
+                                found = 1;
                                 break;
                             }
+                        }
+                        if (found!=1){
+                            Console.WriteLine("Nije pronađen ni jedan token sa tom adresom");
+                            Console.ReadLine();
                         }
                     }
                 }
@@ -323,8 +333,8 @@ void CheckWallet()
             case "0":
                 loop=0;
                 break;
+            default: Console.WriteLine("Nije upisan valjani input");Console.ReadLine();break;
         }
 
         }
-        Console.ReadLine();
     }

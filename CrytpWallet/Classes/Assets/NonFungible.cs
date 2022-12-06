@@ -28,7 +28,6 @@ namespace CrytpWallet.Assets
             public decimal ValueInFungible { get; private set;   }
         public override void UpdateValue()
         {
-            GlobalWallets.GetFungibleAssetByAdress(ItsFungible).UpdateValue();
             ValueInDollar = GlobalWallets.AllFungibleAssets.Find(x => x.Adress == ItsFungible).ValueInDollar * ValueInFungible;
             
 
