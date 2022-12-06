@@ -95,19 +95,19 @@ namespace CrytpWallet.Classes.Global
                 {
                     Name="Blue Ape"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(2))
+                new NonFungibleAsset(GetAdressOfFungibleToken("LTC"), new Decimal(2))
                 {
                     Name="Black Hat"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(100))
+                new NonFungibleAsset(GetAdressOfFungibleToken("LTC"), new Decimal(100))
                 {
                     Name="White Hat"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), new Decimal(1000))
+                new NonFungibleAsset(GetAdressOfFungibleToken("DOGE"), new Decimal(1000))
                 {
                     Name="Coin"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), new Decimal(1))
+                new NonFungibleAsset(GetAdressOfFungibleToken("BNB"), new Decimal(1))
                 {
                     Name="HackSilver"
                 },
@@ -127,19 +127,19 @@ namespace CrytpWallet.Classes.Global
                 {
                     Name="Leather leggings"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(10))
+                new NonFungibleAsset(GetAdressOfFungibleToken("DOGE"), new Decimal(10))
                 {
                     Name="CyberSword"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(0.00043))
+                new NonFungibleAsset(GetAdressOfFungibleToken("NMC"), new Decimal(0.00043))
                 {
                     Name="Croatia Flag #1"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(230))
+                new NonFungibleAsset(GetAdressOfFungibleToken("NMC"), new Decimal(230))
                 {
                     Name="Croatia Flag #231"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(0.0000001))
+                new NonFungibleAsset(GetAdressOfFungibleToken("NMC"), new Decimal(0.0000001))
                 {
                     Name="Croatia Flag #2335"
                 }
@@ -168,15 +168,79 @@ namespace CrytpWallet.Classes.Global
             AllBitcoinWallets[1].CalculateValue();
             AllBitcoinWallets[2].CalculateValue();
 
-            AllEtherumWallets = new List<EtherumWallet>();
-            AllSolanaWallets = new List<SolanaWallet>();
+            AllEtherumWallets = new List<EtherumWallet>()
+            {
+                new EtherumWallet(),
+                new EtherumWallet(),
+                new EtherumWallet()
+            };
+
+            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), 10);
+            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), 500);
+            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("BNB"), 9);
+            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Red Ape"));
+            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Blue Ape"));
+            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Red Ape"));
+            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond Helmet"));
+
+            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), 100);
+            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), 1000);
+            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("BNB"), 80);
+            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Leather leggings"));
+
+            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), 1);
+            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), 10);
+            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), 100000);
+            AllEtherumWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Copper Axe"));
+            AllEtherumWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Coin"));
+
+            AllEtherumWallets[0].CalculateValue();
+            AllEtherumWallets[1].CalculateValue();
+            AllEtherumWallets[2].CalculateValue();
+
+            AllSolanaWallets = new List<SolanaWallet>()
+            {
+                new SolanaWallet(),
+                new SolanaWallet(),
+                new SolanaWallet()
+            };
+
+            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), 200);
+            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), 200);
+            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("NMC"), 200);
+            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("CyberSword"));
+            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Cryptopunk"));
+
+            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), 200000);
+            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), 20);
+            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), 2);
+            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("White Hat"));
+            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Black Hat"));
+
+
+            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), 2);
+            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), 2000000);
+            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("NMC"), 2);
+            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #1"));
+            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #231"));
+            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #2335"));
+
+            AllSolanaWallets[0].CalculateValue();
+            AllSolanaWallets[1].CalculateValue();
+            AllSolanaWallets[2].CalculateValue();
+
             Wallets = new List<Wallet>()
             {
                 AllBitcoinWallets[0],
                 AllBitcoinWallets[1],
                 AllBitcoinWallets[2],
+                AllEtherumWallets[0],
+                AllEtherumWallets[1],
+                AllEtherumWallets[2],
+                AllSolanaWallets[0],
+                AllSolanaWallets[1],
+                AllSolanaWallets[2],
             };
-            //add 6 more wallets
 
         }
         public static Guid GetAdressOfFungibleToken(string label)
@@ -186,6 +250,7 @@ namespace CrytpWallet.Classes.Global
                 if (item.Label == label)
                     return item.Adress;
             }
+            Console.WriteLine("Krivo");
             return Guid.Empty;
         }
         public static FungibleAsset GetFungibleAssetByAdress(Guid adress)
@@ -199,11 +264,15 @@ namespace CrytpWallet.Classes.Global
         }
         public static Guid GetAdressOfNonFungibleToken(string label)
         {
+            //Console.WriteLine(label);
             foreach (var item in AllNonFungibleAssets)
             {
                 if (item.Name == label)
+                {
                     return item.Adress;
+                }
             }
+            //Console.WriteLine(label);
             return Guid.Empty;
         }
         public static NonFungibleAsset GetNonFungibleAssetByAdress(Guid adress)
@@ -244,6 +313,21 @@ namespace CrytpWallet.Classes.Global
             foreach (var item in AllFungibleAssets)
             {
                 Console.WriteLine($"{item.Name}: {item.Adress}");
+            }
+            Console.WriteLine(" ");
+            foreach(var item in AllNonFungibleAssets)
+            {
+                Console.WriteLine($"{item.Name} {item.Adress}");
+            }
+        }
+        public static void ReCalculateAllWallets()
+        {
+            foreach (var item in AllBitcoinWallets)
+            { item.CalculateValue(); }
+            foreach (var item in AllEtherumWallets)
+            { item.CalculateValue(); }
+            foreach (var item in AllSolanaWallets)
+            { item.CalculateValue();
             }
         }
     }

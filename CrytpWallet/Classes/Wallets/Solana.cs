@@ -48,19 +48,5 @@ namespace CrytpWallet.Classes.Wallets
             base.PrintWallet();
 
         }
-        public override bool CalculateValue()
-        {
-            var initial=base.CalculateValue();
-            foreach (var item in HeldNFT)
-            {
-                totalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
-            }
-            if (!initial)
-            {
-                oldValue = totalValue;
-                return false; 
-            }
-            return true;
-        }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace CrytpWallet.Classes.Wallets
 {
@@ -33,6 +34,8 @@ namespace CrytpWallet.Classes.Wallets
             var initial = base.CalculateValue();
             foreach (var item in HeldNFT)
             {
+                if (item==Guid.Empty)
+                    Console.WriteLine($"{HeldNFT.IndexOf(item)}");
                 totalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
                 //Dont like the way I am getting the vlaue here, might have to make it more tidy
             }
