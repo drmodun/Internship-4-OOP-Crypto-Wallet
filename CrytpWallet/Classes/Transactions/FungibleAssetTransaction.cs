@@ -10,10 +10,10 @@ namespace CrytpWallet.Classes.Transactions
     {
         public FungibleTransaction() : base() { }
         public Guid AdressOfToken { get; init; }
-        public double StartBalanceSender { get; init; }
-        public double StartBalanceReceiver { get; init; }
-        public double EndBalanceSender { get; init; }
-        public double EndBalanceReceiver { get; init; }
+        public decimal StartBalanceSender { get; init; }
+        public decimal StartBalanceReceiver { get; init; }
+        public decimal EndBalanceSender { get; init; }
+        public decimal EndBalanceReceiver { get; init; }
         public override void PrintTrasnsaction()
         {
             base.PrintTrasnsaction();

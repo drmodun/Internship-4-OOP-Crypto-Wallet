@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,12 +29,12 @@ namespace CrytpWallet.Classes.Global
 
             AllFungibleAssets = new List<FungibleAsset>()
             {
-                new FungibleAsset(16923.60)
+                new FungibleAsset(new Decimal(16923.60))
                 {
                     Name="Bitcoin",
                     Label="BTC"
                 },
-                new FungibleAsset(79.59)
+                new FungibleAsset(new Decimal(79.59))
                 {
                     Name="Litcoin",
                     Label="LTC"
@@ -43,37 +44,37 @@ namespace CrytpWallet.Classes.Global
                     Name="Namecoin",
                     Label="NMC"
                 },
-                new FungibleAsset(1255.55)
+                new FungibleAsset(new Decimal(1255.55))
                 {
                     Name="Etherum",
                     Label="ETH"
                 },
-                new FungibleAsset(14.16)
+                new FungibleAsset(new Decimal(14.16))
                 {
                     Name="Solana",
                     Label="SOL"
                 },
-                new FungibleAsset(0.1)
+                new FungibleAsset(new Decimal(0.1))
                 {
                     Name="Dogecoin",
                     Label="DOGE"
                 },
-                new FungibleAsset(0.00457)
+                new FungibleAsset(new Decimal(0.00457))
                 {
                     Name="Gridcoin",
                     Label="GRC"
                 },
-                new FungibleAsset(0.39)
+                new FungibleAsset(new Decimal(0.39))
                 {
                     Name="XRP",
                     Label="XRP"
                 },
-                new FungibleAsset(287.12)
+                new FungibleAsset(new Decimal(287.12))
                 {
                     Name="Binance",
                     Label="BNB"
                 },
-                new FungibleAsset(0.04411)
+                new FungibleAsset(new Decimal(0.04411))
                 {
                     Name="Auroracoin",
                     Label="AUR"
@@ -82,63 +83,63 @@ namespace CrytpWallet.Classes.Global
 
             AllNonFungibleAssets = new List<NonFungibleAsset>()
             {
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 1000)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(1000))
                 {
                     Name="Cryptopunk"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 10000)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(10000))
                 {
                     Name="Red Ape"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 1.450)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(1.450))
                 {
                     Name="Blue Ape"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), 2)
+                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(2))
                 {
                     Name="Black Hat"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), 100)
+                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(100))
                 {
                     Name="White Hat"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), 1000)
+                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), new Decimal(1000))
                 {
                     Name="Coin"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), 1)
+                new NonFungibleAsset(GetAdressOfFungibleToken("AUR"), new Decimal(1))
                 {
                     Name="HackSilver"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("GRC"), 1950.346)
+                new NonFungibleAsset(GetAdressOfFungibleToken("GRC"), new Decimal(1950.346))
                 {
                     Name="Leviathan Axe"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("GRC"), 0.3452235)
+                new NonFungibleAsset(GetAdressOfFungibleToken("GRC"), new Decimal(0.3452235))
                 {
                     Name="Copper Axe"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("XRP"), 12021)
+                new NonFungibleAsset(GetAdressOfFungibleToken("XRP"), new Decimal(12021))
                 {
                     Name="Diamond Helmet"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("XRP"), 21)
+                new NonFungibleAsset(GetAdressOfFungibleToken("XRP"), new Decimal(21))
                 {
                     Name="Leather leggings"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), 10)
+                new NonFungibleAsset(GetAdressOfFungibleToken("BTC"), new Decimal(10))
                 {
                     Name="CyberSword"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 0.00043)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(0.00043))
                 {
                     Name="Croatia Flag #1"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 230)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(230))
                 {
                     Name="Croatia Flag #231"
                 },
-                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), 0.0000001)
+                new NonFungibleAsset(GetAdressOfFungibleToken("ETH"), new Decimal(0.0000001))
                 {
                     Name="Croatia Flag #2335"
                 }
@@ -236,6 +237,13 @@ namespace CrytpWallet.Classes.Global
             {
                 item.PrintAsset();
                 Console.WriteLine("");
+            }
+        }
+        public static void AdressPrint()
+        {
+            foreach (var item in AllFungibleAssets)
+            {
+                Console.WriteLine($"{item.Name}: {item.Adress}");
             }
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace CrytpWallet.Assets
 {
     public sealed class NonFungibleAsset:Asset
     {
-            public NonFungibleAsset(Guid itsFungible, double valueInFungible) : base() 
+            public NonFungibleAsset(Guid itsFungible, decimal valueInFungible) : base() 
         {
 
             ValueInFungible = valueInFungible;
@@ -21,14 +22,13 @@ namespace CrytpWallet.Assets
                 return;
             }
             ValueInDollar = GlobalWallets.GetFungibleAssetByAdress(itsFungible).ValueInDollar*valueInFungible;
-            OldValueInDollar = 0;
+            OldValueInDollar =ValueInDollar;
         }
             public Guid ItsFungible { get; init; }
-            public double ValueInFungible { get; private set;   }
+            public decimal ValueInFungible { get; private set;   }
         public override void UpdateValue()
         {
-            
-            OldValueInDollar = ValueInDollar;
+            GlobalWallets.GetFungibleAssetByAdress(ItsFungible).UpdateValue();
             ValueInDollar = GlobalWallets.AllFungibleAssets.Find(x => x.Adress == ItsFungible).ValueInDollar * ValueInFungible;
             
 
@@ -39,6 +39,7 @@ namespace CrytpWallet.Assets
             base.PrintAsset();
             Console.WriteLine($"Vrijednost u fungible assetu: {ValueInFungible} {token.Label}\n" +
                 $"Mijenjanje vrijednosti: {(ValueInDollar - OldValueInDollar) /  ValueInDollar}%");
+            OldValueInDollar = ValueInDollar;
         }
     }
     }

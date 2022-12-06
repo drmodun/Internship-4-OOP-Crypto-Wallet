@@ -13,11 +13,11 @@ namespace CrytpWallet.Classes.Wallets
     public abstract class Wallet : IFungible
     {
         public Guid Adress { get; init; }
-        public Dictionary<Guid, int> AmountOfAssets { get; protected set; }
-        public List<Guid> Transactions { get; protected set; }
-        public double totalValue { get; protected set; }
-        public double oldValue { get; protected set; }
-        public int type { get; protected set; }
+        public Dictionary<Guid, int> AmountOfAssets { get; init; }
+        public List<Guid> Transactions { get; init; }
+        public decimal totalValue { get; protected set; }
+        public decimal oldValue { get; protected set; }
+        public int type { get; init; }
         public Wallet()
         {
             Adress = Guid.NewGuid();
@@ -30,7 +30,8 @@ namespace CrytpWallet.Classes.Wallets
         {
             Console.WriteLine($"Adresa walleta: {Adress}" +
                 $"\nTotalna vrijednost: {totalValue}" +
-                $"\nTotalna promjena vrijednosti {((totalValue - oldValue) / totalValue)*100}%");
+                $"\nTotalna promjena vrijednosti {((totalValue - oldValue) / oldValue)*100}%");
+            oldValue = totalValue;
         }
         public virtual void PrintWalletContents()
         {
@@ -42,7 +43,7 @@ namespace CrytpWallet.Classes.Wallets
         }
         public virtual bool CalculateValue()
         {
-            oldValue = totalValue;
+            //oldValue = totalValue;
             totalValue = 0;
             foreach (var item in AmountOfAssets)
             {
@@ -61,6 +62,7 @@ namespace CrytpWallet.Classes.Wallets
         {
             if (newToken == true)
             {
+                Console.WriteLine($"{assetToAdd.Adress} {AmountOfAssets.Keys.Count}");
                 AmountOfAssets.Add(assetToAdd.Adress, amount);
             }
             else

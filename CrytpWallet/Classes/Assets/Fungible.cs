@@ -9,22 +9,23 @@ namespace CrytpWallet.Assets
 {
     public sealed class FungibleAsset : Asset  
     {
-        public FungibleAsset(double valueInDollar) : base() { 
+        public FungibleAsset(decimal valueInDollar) : base() { 
             ValueInDollar = valueInDollar; 
             OldValueInDollar = valueInDollar; }
         public string Label { get; init; }
         public override void UpdateValue()
         {
             Random random = new Random();
-            double PriceChange = random.Next(-5, 5)/(double)2;
-            OldValueInDollar = ValueInDollar;
+            decimal PriceChange = random.Next(-5, 5)/(decimal)200;
             ValueInDollar +=ValueInDollar*PriceChange;
         }
         public override void PrintAsset()
         {
             base.PrintAsset();
             Console.WriteLine($"Oznaka: {Label}\n" +
-                $"Mijenjanje vrijednosti: {(ValueInDollar-OldValueInDollar)/100}%");
+                $"Mijenjanje vrijednosti: {((ValueInDollar - OldValueInDollar) / OldValueInDollar )*100}%");
+            OldValueInDollar = ValueInDollar;
+
         }
     }
 }

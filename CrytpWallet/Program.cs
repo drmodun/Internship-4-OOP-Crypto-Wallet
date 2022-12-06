@@ -7,9 +7,21 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
 using System.Xml;
 
+
 Console.WriteLine("Hello, World!");
 //main loop
 bool loop=true;
+
+bool DialogOfConfirmation()
+{
+    Console.WriteLine("Ova akcija će zauvijek promjeniti podatke aplikacije, jeste li sigurni da je želite napraviti" +
+        "\n1-DA" +
+        "\n0-NE");
+    var confirmaiton=Console.ReadLine();
+    if (confirmaiton=="1")
+        return true;
+    return false;
+}
 
 var BTC = new FungibleAsset(90)
 {
@@ -19,16 +31,6 @@ var BTC = new FungibleAsset(90)
 
 };
 //GlobalWallets.PrintAll();
-Console.WriteLine(EtherumWallet.AllowedNonFungibleEtherum.Count);
-foreach (var item in EtherumWallet.AllowedAssetsFungibleEtherum)
-{
-    Console.WriteLine(GlobalWallets.GetFungibleAssetByAdress(item).Name);
-}
-foreach (var item in EtherumWallet.AllowedNonFungibleEtherum)
-{
-    Console.WriteLine(GlobalWallets.GetNonFungibleAssetByAdress(item).Name);
-}
-Console.ReadLine();
 while (loop)
 {
     Console.Clear();
@@ -149,6 +151,7 @@ void CheckWallet()
 
                 foreach (var item in userWallet.AmountOfAssets)
                 {
+                    Console.WriteLine($"Vrijednost (ukupna): {GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value}");
                     Console.WriteLine($"Količina: {item.Value}");
                     GlobalWallets.GetFungibleAssetByAdress(item.Key).PrintAsset();
                     Console.WriteLine(" ");
@@ -176,7 +179,7 @@ void CheckWallet()
                 break;
 
             case "2":
-                List<List<Guid>> lists = new List<List<Guid>>() { BitcoinWallet.AllowedAssets, EtherumWallet.AllowedAssetsFungibleEtherum, SolanaWallet.AllowedAssetsFungibleSolana };
+                List<List<Guid>> lists = new List<List<Guid>>() { BitcoinWallet.AllowedAssets, EtherumWallet.AllowedAssetsFungible, SolanaWallet.AllowedAssetsFungible, EtherumWallet.AllowedNonFungible, SolanaWallet.AllowedNonFungible };
                 Console.Clear();
                 Console.WriteLine("Transakcije");
                 Console.WriteLine("Upišite adresu walleta koje šaljete asset");
@@ -202,13 +205,16 @@ void CheckWallet()
                             typeReceiver = 2;
                             receivingWallet = (EtherumWallet)receivingWallet;
                             break;
-                        case 3:
+                        default:
                             typeReceiver = 3;
                             receivingWallet = (SolanaWallet)receivingWallet;
                             break;
                     }
                 }
                 Console.WriteLine("Upišite adresu asseta kojeg želite transferati");
+                Console.WriteLine("");
+                GlobalWallets.AdressPrint();
+                Console.WriteLine("");
                 var assetToTransferAdress = Console.ReadLine();
                 var found = 0;
                 foreach (var item in receivingWallet.AmountOfAssets)
@@ -243,7 +249,7 @@ void CheckWallet()
                         };
                         assetToTransfer.UpdateValue();
                         userWallet.SendFungible(assetToTransfer, ammountToTransfer);
-                        receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
+                        receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
                         //Potentially change etherum and solana to one advanced wallet
                         found = 1;
                         Console.WriteLine("Uspješno narpavljen transfer");
@@ -259,14 +265,46 @@ void CheckWallet()
                             StartBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress]+ammountToTransfer,
                             EndBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress],
                         };
+                        userWallet.Transactions.Add(transaction.Id);
+                        receivingWallet.Transactions.Add(transaction.Id);
+
                         break;
                     }
                 }
                 if (found == 2)
+                {
+
                     break;
+                }
                 else
                 {
-                    Console.WriteLine("sgssdgf");
+                    DoubleWallet userWalletNFT = userWallet as DoubleWallet;
+                    if (userWalletNFT != null)
+                    {
+                        foreach (var item in userWalletNFT.HeldNFT)
+                        {
+                            if (item.ToString() == assetToTransferAdress)
+                            {
+                                var assetToTransfer = GlobalWallets.GetNonFungibleAssetByAdress(item);
+
+                                if (!lists[typeReceiver + 1].Contains(assetToTransfer.Adress))
+                                {
+                                    Console.WriteLine("Taj wallet ne podržava taj nft");
+                                    break;
+                                }
+                                var nonFungibleTransaction = new NonFungibleTransaction()
+                                {
+                                    AdressOfNFT = assetToTransfer.Adress,
+                                    Sender = userWallet.Adress,
+                                    Receiver = receivingWallet.Adress,
+
+                                };
+                                userWallet.Transactions.Add(nonFungibleTransaction.Id);
+                                receivingWallet.Transactions.Add(nonFungibleTransaction.Id);
+                                break;
+                            }
+                        }
+                    }
                 }
                 break;
 

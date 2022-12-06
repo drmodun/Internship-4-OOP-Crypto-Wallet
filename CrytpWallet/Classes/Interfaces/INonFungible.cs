@@ -9,7 +9,7 @@ namespace CrytpWallet.Classes.Interfaces
 {
     public interface INonFungible
     {
-        void GetNFT(NonFungibleAsset assetToAdd, Guid TransactionAdress);
-        void SendNFT(NonFungibleAsset assetToRemove, Guid TransactionAdress);
+        void GetNFT(NonFungibleAsset assetToAdd);
+        void SendNFT(NonFungibleAsset assetToRemove);
     }
 }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace CrytpWallet.Classes.Wallets
 {
 
-    public sealed class SolanaWallet : Wallet,INonFungible
+    public sealed class SolanaWallet : DoubleWallet
     {
         public SolanaWallet() : base() {
             type = 3;
@@ -20,7 +20,7 @@ namespace CrytpWallet.Classes.Wallets
         }
         static SolanaWallet()
         {
-            AllowedAssetsFungibleSolana = new List<Guid>()
+            AllowedAssetsFungible = new List<Guid>()
             {
                 GlobalWallets.GetAdressOfFungibleToken("SOL"),
                 GlobalWallets.GetAdressOfFungibleToken("DOGE"),
@@ -28,34 +28,20 @@ namespace CrytpWallet.Classes.Wallets
                 GlobalWallets.GetAdressOfFungibleToken("NMC")
             };
 
-            AllowedNonFungibleSolana = new List<Guid>();
+            AllowedNonFungible = new List<Guid>();
             foreach (var item in GlobalWallets.AllNonFungibleAssets)
             {
-                foreach (var id in AllowedAssetsFungibleSolana)
+                foreach (var id in AllowedAssetsFungible)
                 {
                     if (item.ItsFungible == id)
-                        AllowedNonFungibleSolana.Add(item.Adress);
+                        AllowedNonFungible.Add(item.Adress);
                 }
             }
         }
-        public static List<Guid> AllowedAssetsFungibleSolana { get; protected set; }
-        public static List<Guid> AllowedNonFungibleSolana { get; protected set; }
-        public List<Guid> HeldNFT { get; init; }
+        public static List<Guid> AllowedAssetsFungible { get; private set; }
+        public static List<Guid> AllowedNonFungible { get; private set; }
+        //public List<Guid> HeldNFT { get; init; }
         
-        public void GetNFT(NonFungibleAsset assetToAdd, Guid TransactionAdress)
-        {
-            HeldNFT.Add(assetToAdd.Adress);
-            totalValue += assetToAdd.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-
-        }
-        public void SendNFT(NonFungibleAsset assetToRemove, Guid TransactionAdress)
-        {
-            HeldNFT.Remove(assetToRemove.Adress);
-            totalValue -= assetToRemove.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-
-        }
         public override void PrintWallet()
         {
             Console.WriteLine("Solana Wallet");

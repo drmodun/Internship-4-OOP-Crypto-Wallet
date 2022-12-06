@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace CrytpWallet.Classes.Wallets
 {
 
-    public sealed  class EtherumWallet : Wallet,INonFungible
+    public sealed  class EtherumWallet : DoubleWallet
     {
         public EtherumWallet() : base() {
             type = 2;
@@ -19,7 +19,7 @@ namespace CrytpWallet.Classes.Wallets
         }
         static EtherumWallet()
         {
-            AllowedAssetsFungibleEtherum = new List<Guid>()
+            AllowedAssetsFungible = new List<Guid>()
             {
                 GlobalWallets.GetAdressOfFungibleToken("ETH"),
                 GlobalWallets.GetAdressOfFungibleToken("GRC"),
@@ -27,54 +27,29 @@ namespace CrytpWallet.Classes.Wallets
                 GlobalWallets.GetAdressOfFungibleToken("XRP"),
                 GlobalWallets.GetAdressOfFungibleToken("BNB")
             };
-            AllowedNonFungibleEtherum = new List<Guid>()
+            AllowedNonFungible = new List<Guid>()
             { };
             //Adding all nfts which this wallet can support based on supported cryptocurrencies
             foreach (var item in GlobalWallets.AllNonFungibleAssets)
             {
-                foreach (Guid id in AllowedAssetsFungibleEtherum)
+                foreach (Guid id in AllowedAssetsFungible)
                 {
                     if (item.ItsFungible == id)
-                        AllowedNonFungibleEtherum.Add(item.Adress);
+                        AllowedNonFungible.Add(item.Adress);
                 }
             }
         }
-        public static List<Guid> AllowedAssetsFungibleEtherum { get; protected set; }
-        public static List<Guid> AllowedNonFungibleEtherum { get; protected set; }
-        public List<Guid> HeldNFT { get; init; }
-        public void GetNFT(NonFungibleAsset assetToAdd, Guid TransactionAdress) 
-        {
-            HeldNFT.Add(assetToAdd.Adress);
-            totalValue+=assetToAdd.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-        }
-        public void SendNFT(NonFungibleAsset assetToRemove, Guid TransactionAdress)
-        {
-            HeldNFT.Remove(assetToRemove.Adress);
-            totalValue -= assetToRemove.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-        }
+        public static List<Guid> AllowedAssetsFungible { get; private set; }
+        public static List<Guid> AllowedNonFungible { get; private set; }
+        //public List<Guid> HeldNFT { get; init; }
+        
         public override void PrintWallet()
         {
             Console.WriteLine("Etherum Wallet");
             base.PrintWallet();
 
         }
-        public override bool CalculateValue()
-        {
-            var initial=base.CalculateValue();
-            foreach (var item in HeldNFT)
-            {
-                totalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
-                //Dont like the way I am getting the vlaue here, might have to make it more tidy
-            }
-            if (!initial)
-            {
-                oldValue = totalValue;
-                return false;
-            }
-            return true;
-        }
+        
         //Change these funcitons later, make them a bit better
     }
 }

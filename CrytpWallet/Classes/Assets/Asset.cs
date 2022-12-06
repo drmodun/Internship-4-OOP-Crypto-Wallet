@@ -11,8 +11,8 @@ namespace CrytpWallet.Assets
     {
         public Guid Adress { get; init;  }
         public string Name { get; init; }
-        public double ValueInDollar { get; protected set; }
-        public double OldValueInDollar { get; protected set; }
+        public decimal ValueInDollar { get; protected set; }
+        public decimal OldValueInDollar { get; protected set; }
         public virtual void PrintAsset()
         {
             Console.WriteLine($"Adresa asseta: {Adress}\n" +
