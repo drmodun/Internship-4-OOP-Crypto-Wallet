@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CrytpWallet.Classes.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Assets
 {
-    public abstract class Asset
+    public abstract class Asset 
     {
         public Guid Adress { get; init;  }
         public string Name { get; init; }

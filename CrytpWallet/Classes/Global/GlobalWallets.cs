@@ -169,7 +169,12 @@ namespace CrytpWallet.Classes.Global
 
             AllEtherumWallets = new List<EtherumWallet>();
             AllSolanaWallets = new List<SolanaWallet>();
-            Wallets = new List<Wallet>();
+            Wallets = new List<Wallet>()
+            {
+                AllBitcoinWallets[0],
+                AllBitcoinWallets[1],
+                AllBitcoinWallets[2],
+            };
             //add 6 more wallets
 
         }
@@ -209,6 +214,16 @@ namespace CrytpWallet.Classes.Global
             }
             return null;
         }
+        public static Wallet GetWalletByAdress(string adress)
+        {
+            foreach(var item in Wallets)
+            {
+                if (item.Adress.ToString() == adress)
+                    return item;
+            }
+            return null;
+        }
+
         //For debugging sake, will most likely delete later
         public static void PrintAll()
         {

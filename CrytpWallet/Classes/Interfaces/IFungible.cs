@@ -9,7 +9,7 @@ namespace CrytpWallet.Classes.Interfaces
 {
     public  interface IFungible
     {
-        void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress);
-        void SendFungible(FungibleAsset assetToRemove, int amount, Guid TransactionAdress);
+        void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken);
+        void SendFungible(FungibleAsset assetToRemove, int amount);
     }
 }

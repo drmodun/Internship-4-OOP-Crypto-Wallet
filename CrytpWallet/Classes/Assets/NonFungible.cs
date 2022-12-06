@@ -38,7 +38,7 @@ namespace CrytpWallet.Assets
             var token = GlobalWallets.AllFungibleAssets.Find(x => x.Adress == ItsFungible);
             base.PrintAsset();
             Console.WriteLine($"Vrijednost u fungible assetu: {ValueInFungible} {token.Label}\n" +
-                $"Mijenjanje vrijednosti: {(ValueInDollar - OldValueInDollar) / 100}%");
+                $"Mijenjanje vrijednosti: {(ValueInDollar - OldValueInDollar) /  ValueInDollar}%");
         }
     }
     }

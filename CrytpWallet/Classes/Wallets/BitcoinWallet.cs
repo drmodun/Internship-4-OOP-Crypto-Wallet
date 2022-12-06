@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Wallets
 {
-    public sealed class BitcoinWallet:Wallet, IFungible
+    public sealed class BitcoinWallet:Wallet
     {
-        public BitcoinWallet() : base() { 
-            
+        public BitcoinWallet() : base() {
+            type = 1;
         }
         static BitcoinWallet()
         {
@@ -26,27 +26,7 @@ namespace CrytpWallet.Classes.Wallets
             };
         }
         public static List<Guid> AllowedAssets { get; private set; }
-        public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress)
-        {
-            if (newToken)
-            {
-                AmountOfAssets.Add(assetToAdd.Adress, amount);
-            }
-            else
-            {
-                AmountOfAssets[assetToAdd.Adress] += amount;
-                totalValue -= amount * assetToAdd.ValueInDollar;
-            }
-            Transactions.Add(TransactionAdress);
-
-        }
-        public void SendFungible(FungibleAsset assetToRemove, int amount, Guid TransactionAdress)
-        {
-            AmountOfAssets[assetToRemove.Adress] -= amount;
-            totalValue -= amount * assetToRemove.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-
-        }
+        
         public override void PrintWallet()
         {
             Console.WriteLine("Bitcoin Wallet");

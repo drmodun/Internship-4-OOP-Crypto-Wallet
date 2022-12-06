@@ -11,9 +11,10 @@ using System.Threading.Tasks;
 namespace CrytpWallet.Classes.Wallets
 {
 
-    public sealed class SolanaWallet : Wallet, IFungible,INonFungible
+    public sealed class SolanaWallet : Wallet,INonFungible
     {
         public SolanaWallet() : base() {
+            type = 3;
             
             HeldNFT = new List<Guid>();
         }
@@ -40,27 +41,7 @@ namespace CrytpWallet.Classes.Wallets
         public static List<Guid> AllowedAssetsFungibleSolana { get; protected set; }
         public static List<Guid> AllowedNonFungibleSolana { get; protected set; }
         public List<Guid> HeldNFT { get; init; }
-        public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken, Guid TransactionAdress )
-        {
-            if (newToken == true)
-            {
-                AmountOfAssets.Add(assetToAdd.Adress, amount);
-            }
-            else
-            {
-                AmountOfAssets[assetToAdd.Adress] += amount;
-                totalValue += amount * assetToAdd.ValueInDollar;
-            }
-            Transactions.Add(TransactionAdress);
-
-        }
-        public void SendFungible(FungibleAsset assetToRemove, int amount, Guid TransactionAdress)
-        {
-            AmountOfAssets[assetToRemove.Adress] -= amount;
-            totalValue -= amount * assetToRemove.ValueInDollar;
-            Transactions.Add(TransactionAdress);
-
-        }
+        
         public void GetNFT(NonFungibleAsset assetToAdd, Guid TransactionAdress)
         {
             HeldNFT.Add(assetToAdd.Adress);
@@ -81,17 +62,19 @@ namespace CrytpWallet.Classes.Wallets
             base.PrintWallet();
 
         }
-        public override void CalculateValue()
+        public override bool CalculateValue()
         {
-            base.CalculateValue();
+            var initial=base.CalculateValue();
             foreach (var item in HeldNFT)
             {
                 totalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
             }
-            if (oldValue < 0)
+            if (!initial)
             {
                 oldValue = totalValue;
+                return false; 
             }
+            return true;
         }
     }
 }
