@@ -1,4 +1,5 @@
 ﻿using CrytpWallet.Assets;
+using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Classes.Wallets;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,12 @@ namespace CrytpWallet.Classes.Global
         //public static List<Asset> AllAssets { get; private set; }
         public static List<FungibleAsset> AllFungibleAssets { get; private set; }
         public static List<NonFungibleAsset> AllNonFungibleAssets { get; private set; }
-        
+        public static List<Transaction> AllTransactions { get; private set; }
         static GlobalWallets()
         {
             
             //AllAssets = new List<Asset>();
-
+            AllTransactions= new List<Transaction>();
             AllFungibleAssets = new List<FungibleAsset>()
             {
                 new FungibleAsset(new Decimal(16923.60))
@@ -343,6 +344,15 @@ namespace CrytpWallet.Classes.Global
             foreach (var item in AllSolanaWallets)
             { item.CalculateValue();
             }
+        }
+        public static Transaction GetTransactionById(Guid id)
+        {
+            foreach(var item in AllTransactions)
+            {
+                if (item.Id==id)
+                { return item; }
+            }
+            return null;
         }
     }
 }

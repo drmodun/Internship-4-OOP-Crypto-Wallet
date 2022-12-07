@@ -67,7 +67,10 @@ namespace CrytpWallet.Classes.Wallets
             }
             else
             {
+                Console.WriteLine(AmountOfAssets[assetToAdd.Adress]);
                 AmountOfAssets[assetToAdd.Adress] += amount;
+                Console.WriteLine(AmountOfAssets[assetToAdd.Adress]);
+                Console.WriteLine(amount);
                 //totalValue += amount * assetToAdd.ValueInDollar;
             }
             CalculateValue();
@@ -78,6 +81,20 @@ namespace CrytpWallet.Classes.Wallets
             //totalValue -= amount * assetToRemove.ValueInDollar;
             CalculateValue();
             //try handling more things in main or global static classes
+        }
+        public void PrintAllTransactions()
+        {
+            foreach(var item in Transactions)
+            {
+                var transaction = GlobalWallets.GetTransactionById(item);
+                if (transaction as FungibleTransaction!=null)
+                {
+                    var transactionFungible= transaction as FungibleTransaction;
+                    transactionFungible.PrintTrasnsaction();
+                    return;
+                }
+                ((NonFungibleTransaction)transaction).PrintTrasnsaction();
+            }
         }
     }
 }

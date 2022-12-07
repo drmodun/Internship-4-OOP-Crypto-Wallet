@@ -3,8 +3,10 @@ using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Classes.Wallets;
+using Microsoft.VisualBasic;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using System.Transactions;
 using System.Xml;
 
 
@@ -149,7 +151,7 @@ void CheckWallet()
         {
             case "1":
                 Console.Clear();
-                Console.WriteLine($"Ukupna vrijendnost: {userWallet.totalValue}");
+                userWallet.PrintWallet();
 
                 foreach (var item in userWallet.AmountOfAssets)
                 {
@@ -257,7 +259,6 @@ void CheckWallet()
                         assetToTransfer.UpdateValue();
                         userWallet.SendFungible(assetToTransfer, ammountToTransfer);
                         receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
-                        //Potentially change etherum and solana to one advanced wallet
                         found = 1;
                         Console.WriteLine("Uspješno narpavljen transfer");
                         Console.ReadLine();
@@ -272,6 +273,7 @@ void CheckWallet()
                             StartBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress]+ammountToTransfer,
                             EndBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress],
                         };
+                        GlobalWallets.AllTransactions.Add(transaction);
                         userWallet.Transactions.Add(transaction.Id);
                         receivingWallet.Transactions.Add(transaction.Id);
                         //switch typewith enum
@@ -309,6 +311,7 @@ void CheckWallet()
                                     Receiver = receivingWallet.Adress,
 
                                 };
+                                GlobalWallets.AllTransactions.Add(nonFungibleTransaction);
                                 GlobalWallets.GetFungibleAssetByAdress(assetToTransfer.ItsFungible).UpdateValue();
                                 assetToTransfer.UpdateValue();
                                 userWalletNFT.SendNFT(assetToTransfer);
@@ -329,7 +332,71 @@ void CheckWallet()
                     }
                 }
                 break;
+            case "3":
+                Console.Clear();
+                userWallet.PrintAllTransactions();
+                Console.WriteLine("Pretisnite 1 da biste poćeli proces opozivanja transakcije");
+                var choiceTransaction = Console.ReadLine();
+                if (choiceTransaction != "1") {
+                    break;
+                }
+                Console.WriteLine("Upišite adresu transakcije koju želite opozvati");
+                var adressOfTransactionTry = Console.ReadLine();
+                Guid adressOfTransaction = Guid.Empty;
+                Guid.TryParse(adressOfTransactionTry, out adressOfTransaction);
+                if (!userWallet.Transactions.Contains(adressOfTransaction) || adressOfTransaction==Guid.Empty)
+                {
+                    Console.WriteLine("Nije upisan pravilan Id transakcije");
+                    Console.ReadLine();
+                    break;
+                }
+                var transactionToRecall = GlobalWallets.GetTransactionById(adressOfTransaction);
+                if (transactionToRecall.Recalled)
+                {
+                    Console.WriteLine("Ta transakcija je već opozvana");
+                    Console.ReadLine();
+                    break;
+                }
+                if ((DateTime.Now - transactionToRecall.TimeOfTransaction).TotalSeconds > 45)
+                {
+                    Console.WriteLine("Prošlo je više od 45 sekunda od prošle transakcije");
+                    Console.ReadLine();
+                    break;
+                }
+                Wallet sendWallet = null;
+                Wallet receiveWallet = null;
+                if (userWallet.Adress != transactionToRecall.Sender)
+                {
+                    sendWallet= userWallet;
+                    receiveWallet= GlobalWallets.GetWalletByAdress(transactionToRecall.Sender.ToString());
 
+                }
+                else
+                {
+                    receiveWallet = userWallet;
+                    sendWallet = GlobalWallets.GetWalletByAdress(transactionToRecall.Receiver.ToString());
+                }
+
+                if (transactionToRecall as NonFungibleTransaction == null)
+                {
+                    var transactionToRecallFungible= transactionToRecall as FungibleTransaction;
+                    sendWallet.SendFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver));
+                    Console.WriteLine(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver);
+                    Console.WriteLine((int)transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver);
+                    receiveWallet.GetFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver), false);
+                    transactionToRecall.Recalled= true;  
+                }
+                //transactionToRecall.Recalled=true;
+                else
+                {
+                    var transactionToRecallNonFungible = transactionToRecall as NonFungibleTransaction;
+                    ((DoubleWallet)sendWallet).SendNFT(GlobalWallets.GetNonFungibleAssetByAdress(transactionToRecallNonFungible.AdressOfNFT));
+                    ((DoubleWallet)receiveWallet).GetNFT(GlobalWallets.GetNonFungibleAssetByAdress(transactionToRecallNonFungible.AdressOfNFT));
+                    transactionToRecall.Recalled= true;
+                }
+                Console.WriteLine("Uspješno recallana transakcija, recallanje samo vraca kolicinu izmjenjenju između walleta, ali neće vratiti proslu vrijdnost Fungible tokena");
+                Console.ReadLine();
+                break;
             case "0":
                 loop=0;
                 break;

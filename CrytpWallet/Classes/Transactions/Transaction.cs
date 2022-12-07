@@ -12,7 +12,7 @@ namespace CrytpWallet.Classes.Transactions
         public  Guid Sender { get; init; }
         public  Guid Receiver { get; init; }
         public  DateTime TimeOfTransaction { get; init; }
-        public  bool Recalled { get; protected set;}
+        public  bool Recalled { get; set;}
         public Transaction()
         {
             Id = Guid.NewGuid();
