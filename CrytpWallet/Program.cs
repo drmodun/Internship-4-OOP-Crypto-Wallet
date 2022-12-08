@@ -3,11 +3,6 @@ using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Classes.Wallets;
-using Microsoft.VisualBasic;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.RegularExpressions;
-using System.Transactions;
-using System.Xml;
 
 
 Console.WriteLine("Hello, World!");
@@ -38,7 +33,7 @@ while (loop)
     Console.Clear();
     Console.WriteLine("1 - Kreiraj Wallet\n" +
         "2 - Posjeti Wallet\n" +
-        "3 - Opozovi Transakciju");
+        "0 - Izlaz iz aplikacije");
     var userChoice=Console.ReadLine();
     switch (userChoice)
     {
@@ -47,6 +42,9 @@ while (loop)
             break;
         case "2":
             CheckWallet();
+            break;
+        case "0":
+            Environment.Exit(0);
             break;
     }
 }
@@ -58,26 +56,33 @@ void CreateWallet()
         Console.WriteLine("Koji wallet želite kreirati?");
         Console.WriteLine("1 - Bitcoin Wallet " +
             "\n2 - Etherum Wallet" +
-            "\n3 - Solana Wallet");
+            "\n3 - Solana Wallet" +
+            "\n0 - Main Menu");
         var choice = Console.ReadLine();
         switch (choice){
             case "1":
-                var newWallet = new BitcoinWallet();
+                var newWallet = new BitcoinWallet() { IsPredefined = false };
                 GlobalWallets.AllBitcoinWallets.Add(newWallet);
                 GlobalWallets.Wallets.Add(newWallet);
+                newWallet.CalculateValue();
+                Console.Clear() ;
                 Console.WriteLine($"Wallet id {newWallet.Adress} napravljen");
                 break;
             case "2":
-                var newWalletEtherum = new EtherumWallet();
+                var newWalletEtherum = new EtherumWallet() { IsPredefined = false};
                 GlobalWallets.AllEtherumWallets.Add(newWalletEtherum);
                 GlobalWallets.Wallets.Add(newWalletEtherum);
+                Console.Clear() ;
+                newWalletEtherum.CalculateValue();
                 Console.WriteLine($"Wallet id {newWalletEtherum.Adress} napravljen");
 
                 break;
             case "3":
-                var newSolanaWallet = new SolanaWallet();
+                var newSolanaWallet = new SolanaWallet() { IsPredefined = false };
                 GlobalWallets.AllSolanaWallets.Add(newSolanaWallet);
                 GlobalWallets.Wallets.Add(newSolanaWallet);
+                newSolanaWallet.CalculateValue();
+                Console.Clear() ;
                 Console.WriteLine($"Wallet id {newSolanaWallet.Adress} napravljen");
 
                 break;
@@ -86,15 +91,16 @@ void CreateWallet()
             default: Console.WriteLine("Neispravan input");
                     break;
         }
-        Console.Clear();
         Console.WriteLine("Pretisnite bilo koju tipku za nastavak");
         Console.ReadLine();
     }
 }
 void CheckWallet()
 {
+    Console.Clear();
     foreach (var item in GlobalWallets.Wallets)
     {
+        //cahnge this part to make sense
         if (GlobalWallets.AllBitcoinWallets.Find(x => x.Adress == item.Adress) != null)
         {
             ((BitcoinWallet)item).PrintWallet();
@@ -145,14 +151,15 @@ void CheckWallet()
         Console.WriteLine("Izaberite što želite sa walletom");
         Console.WriteLine("1 - Portfolio" +
             "\n2 - Transfer" +
-            "\n3 - Povijest transakcija");
+            "\n3 - Povijest transakcija" +
+            "\n0 - Main Menu");
         var choice = Console.ReadLine();
         switch (choice)
         {
             case "1":
                 Console.Clear();
                 userWallet.PrintWallet();
-
+                Console.WriteLine("");
                 foreach (var item in userWallet.AmountOfAssets)
                 {
                     
@@ -184,7 +191,6 @@ void CheckWallet()
                 break;
 
             case "2":
-                GlobalWallets.ReCalculateAllWallets();
                 List<List<Guid>> lists = new List<List<Guid>>() { BitcoinWallet.AllowedAssets, EtherumWallet.AllowedAssetsFungible, SolanaWallet.AllowedAssetsFungible, EtherumWallet.AllowedNonFungible, SolanaWallet.AllowedNonFungible };
                 Console.Clear();
                 Console.WriteLine("Transakcije");
@@ -201,7 +207,7 @@ void CheckWallet()
                 }
                 else
                 {
-                    switch (receivingWallet.type)
+                    switch (receivingWallet.Type)
                     {
                         case 1:
                             typeReceiver = 1;
@@ -219,7 +225,7 @@ void CheckWallet()
                 }
                 Console.WriteLine("Upišite adresu asseta kojeg želite transferati");
                 Console.WriteLine("");
-                GlobalWallets.AdressPrint(userWallet.Adress);
+                GlobalWallets.AdressPrint(userWallet.Adress, receivingWallet.Adress);
                 Console.WriteLine("");
                 var assetToTransferAdress = Console.ReadLine();
                 var found = 0;
@@ -246,7 +252,6 @@ void CheckWallet()
                         {
                             Console.WriteLine("Upisani netočna količina");
                             Console.WriteLine("Upišite bilo koju tipku za nastavak");
-                            Console.WriteLine(item.Value);
                             Console.ReadLine();
                             found = 2;
                             break;
@@ -256,6 +261,9 @@ void CheckWallet()
                             Sender = userWallet.Adress,
                             Receiver = receivingWallet.Adress
                         };
+                        var confirmationTransactionRecall = DialogOfConfirmation();
+                        if (!confirmationTransactionRecall)
+                            break;
                         assetToTransfer.UpdateValue();
                         userWallet.SendFungible(assetToTransfer, ammountToTransfer);
                         receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
@@ -304,6 +312,9 @@ void CheckWallet()
                                     Console.ReadLine();
                                     break;
                                 }
+                                var confirmationNFT = DialogOfConfirmation();
+                                if (!confirmationNFT)
+                                    break;
                                 var nonFungibleTransaction = new NonFungibleTransaction()
                                 {
                                     AdressOfNFT = assetToTransfer.Adress,
@@ -325,7 +336,7 @@ void CheckWallet()
                                 break;
                             }
                         }
-                        if (found!=1){
+                        if (found==0){
                             Console.WriteLine("Nije pronađen ni jedan token sa tom adresom");
                             Console.ReadLine();
                         }
@@ -334,6 +345,13 @@ void CheckWallet()
                 break;
             case "3":
                 Console.Clear();
+                if (userWallet.Transactions.Count == 0)
+                {
+                    Console.WriteLine("Na tom walletu nije napravljena ni jedna transakcija");
+                    Console.WriteLine("Upišite bilo koju tipku za vratiti se na menu");
+                    Console.ReadLine();
+                    break;
+                }
                 userWallet.PrintAllTransactions();
                 Console.WriteLine("Pretisnite 1 da biste poćeli proces opozivanja transakcije");
                 var choiceTransaction = Console.ReadLine();
@@ -363,6 +381,9 @@ void CheckWallet()
                     Console.ReadLine();
                     break;
                 }
+                var confirmation = DialogOfConfirmation();
+                if (!confirmation)
+                    break;
                 Wallet sendWallet = null;
                 Wallet receiveWallet = null;
                 if (userWallet.Adress != transactionToRecall.Sender)
@@ -381,8 +402,6 @@ void CheckWallet()
                 {
                     var transactionToRecallFungible= transactionToRecall as FungibleTransaction;
                     sendWallet.SendFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver));
-                    Console.WriteLine(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver);
-                    Console.WriteLine((int)transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver);
                     receiveWallet.GetFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver), false);
                     transactionToRecall.Recalled= true;  
                 }

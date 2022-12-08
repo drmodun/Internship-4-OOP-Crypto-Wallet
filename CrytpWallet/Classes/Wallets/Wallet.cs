@@ -1,10 +1,5 @@
 ﻿using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Assets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Interfaces;
 
@@ -15,48 +10,64 @@ namespace CrytpWallet.Classes.Wallets
         public Guid Adress { get; init; }
         public Dictionary<Guid, int> AmountOfAssets { get; init; }
         public List<Guid> Transactions { get; init; }
-        public decimal totalValue { get; protected set; }
-        public decimal oldValue { get; protected set; }
-        public int type { get; init; }
+        public decimal TotalValue { get; protected set; }
+        public decimal OldValue { get; protected set; }
+        public int Type { get; init; } 
+        public bool IsPredefined { get; init; }
+        protected bool HasChanged;
         public Wallet()
         {
             Adress = Guid.NewGuid();
             AmountOfAssets = new Dictionary<Guid, int>();
             Transactions = new List<Guid>();
-            totalValue = -1;
-            oldValue = -1;
+            TotalValue = -1;
+            OldValue = -1;
+            IsPredefined= true;
+            HasChanged= false;
         }
         public virtual void PrintWallet()
         {
-            Console.WriteLine($"Adresa walleta: {Adress}" +
-                $"\nTotalna vrijednost: {totalValue}" +
-                $"\nTotalna promjena vrijednosti {((totalValue - oldValue) / oldValue)*100}%");
-            oldValue = totalValue;
-        }
-        public virtual void PrintWalletContents()
-        {
-            foreach (var item in AmountOfAssets)
+            var changePrint = "";
+            if (OldValue <= -1 && (!HasChanged || IsPredefined))
             {
-                GlobalWallets.AllFungibleAssets.Find(x => x.Adress == item.Key).PrintAsset();
-                Console.WriteLine(" ");
+                changePrint = "\nTotalna promjena vrijednosti: 0%";
             }
+            else if (HasChanged && OldValue <= 0)
+            {
+                changePrint = $"\nTotalna promjena vrijednosti: 100% (vrijednost prije bila 0 pa nije moguće reći)";
+            }
+            else if (OldValue == 0 && !HasChanged && !IsPredefined && TotalValue != 0)
+            {
+                changePrint = $"\nTotalna promjena vrijednosti: 0%";
+            }
+            else if (OldValue == 0 && TotalValue == 0)
+                changePrint = "\nTotalna promjena vrijednosti: 0%";
+            else
+            {
+
+                changePrint = $"\nTotalna promjena vrijednosti {((TotalValue - OldValue) / OldValue) * 100}%";
+            }
+            Console.WriteLine($"Adresa walleta: {Adress}" +
+                $"\nTotalna vrijednost: {TotalValue}" +
+                $"{changePrint}");
+            OldValue = TotalValue;
+            HasChanged = false;
         }
-        public virtual bool CalculateValue()
+        public virtual decimal CalculateValue()
         {
-            //oldValue = totalValue;
-            totalValue = 0;
+            var startingValue = TotalValue;
+            //OldValue = TotalValue;
+            TotalValue = 0;
             foreach (var item in AmountOfAssets)
             {
-                totalValue += GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value;
+                TotalValue += GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value;
                 
             }
-            if (oldValue < 0)
+            if (TotalValue != startingValue && startingValue!=-1)
             {
-                oldValue = totalValue;
-                return false;
+                HasChanged= true;
             }
-            return true;
-
+            return startingValue;
         }
         public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken)
         {
@@ -71,14 +82,14 @@ namespace CrytpWallet.Classes.Wallets
                 AmountOfAssets[assetToAdd.Adress] += amount;
                 Console.WriteLine(AmountOfAssets[assetToAdd.Adress]);
                 Console.WriteLine(amount);
-                //totalValue += amount * assetToAdd.ValueInDollar;
+                //TotalValue += amount * assetToAdd.ValueInDollar;
             }
             CalculateValue();
         }
         public void SendFungible(FungibleAsset assetToRemove, int amount)
         {
             AmountOfAssets[assetToRemove.Adress] -= amount;
-            //totalValue -= amount * assetToRemove.ValueInDollar;
+            //TotalValue -= amount * assetToRemove.ValueInDollar;
             CalculateValue();
             //try handling more things in main or global static classes
         }
@@ -90,10 +101,11 @@ namespace CrytpWallet.Classes.Wallets
                 if (transaction as FungibleTransaction!=null)
                 {
                     var transactionFungible= transaction as FungibleTransaction;
-                    transactionFungible.PrintTrasnsaction();
+                    transactionFungible.PrintTransaction();
                     return;
                 }
-                ((NonFungibleTransaction)transaction).PrintTrasnsaction();
+                ((NonFungibleTransaction)transaction).PrintTransaction();
+                Console.WriteLine("");
             }
         }
     }

@@ -17,8 +17,9 @@ namespace CrytpWallet.Classes.Transactions
         {
             Id = Guid.NewGuid();
             Recalled = false;
+            TimeOfTransaction= DateTime.Now;
         }
-        public virtual void PrintTrasnsaction()
+        public virtual void PrintTransaction()
         {
             Console.WriteLine($"Id transakcije: {Id}\n" +
                 $"Pošiljatelj: {Sender}\n" +

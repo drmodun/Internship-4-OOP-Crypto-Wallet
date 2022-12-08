@@ -20,33 +20,34 @@ namespace CrytpWallet.Classes.Wallets
         public void GetNFT(NonFungibleAsset assetToAdd)
         {
             HeldNFT.Add(assetToAdd.Adress);
-            totalValue += assetToAdd.ValueInDollar;
+            TotalValue += assetToAdd.ValueInDollar;
             //Transactions.Add(TransactionAdress);
         }
         public void SendNFT(NonFungibleAsset assetToRemove)
         {
             HeldNFT.Remove(assetToRemove.Adress);
-            totalValue -= assetToRemove.ValueInDollar;
+            TotalValue -= assetToRemove.ValueInDollar;
             //Transactions.Add(TransactionAdress);
         }
-        public override bool CalculateValue()
+        public override decimal CalculateValue()
         {
-            var initial = base.CalculateValue();
+            var startingValue= base.CalculateValue();
+
             foreach (var item in HeldNFT)
             {
                 if (item==Guid.Empty)
                     Console.WriteLine($"{HeldNFT.IndexOf(item)}");
-                totalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
+                TotalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
                 //Dont like the way I am getting the vlaue here, might have to make it more tidy
             }
-            if (!initial)
+            if (TotalValue != startingValue && startingValue!=-1)
             {
-                oldValue = totalValue;
-                return false;
+                HasChanged= true;
             }
-            return true;
+            return 0;
         }
 
 
     }
 }
+    

@@ -11,9 +11,9 @@ namespace CrytpWallet.Classes.Transactions
         public NonFungibleTransaction() : base() { }
         
         public  Guid AdressOfNFT { get; init; }
-        public override void PrintTrasnsaction()
+        public override void PrintTransaction()
         {
-            base.PrintTrasnsaction();
+            base.PrintTransaction();
             Console.WriteLine(
                 $"Ime fungible tokena: {AdressOfNFT}\n" +
                 $"Opozvana: {Recalled}");

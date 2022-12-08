@@ -13,7 +13,7 @@ namespace CrytpWallet.Classes.Wallets
     public sealed class BitcoinWallet:Wallet
     {
         public BitcoinWallet() : base() {
-            type = 1;
+            Type = 1;
         }
         static BitcoinWallet()
         {

@@ -14,7 +14,7 @@ namespace CrytpWallet.Classes.Wallets
     public sealed class SolanaWallet : DoubleWallet
     {
         public SolanaWallet() : base() {
-            type = 3;
+            Type = 3;
             
             HeldNFT = new List<Guid>();
         }

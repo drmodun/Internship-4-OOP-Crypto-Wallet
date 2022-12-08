@@ -14,9 +14,9 @@ namespace CrytpWallet.Classes.Transactions
         public decimal StartBalanceReceiver { get; init; }
         public decimal EndBalanceSender { get; init; }
         public decimal EndBalanceReceiver { get; init; }
-        public override void PrintTrasnsaction()
+        public override void PrintTransaction()
         {
-            base.PrintTrasnsaction();
+            base.PrintTransaction();
             Console.WriteLine($"Količina: {EndBalanceReceiver-StartBalanceReceiver}\n" +
                 $"Ime fungible tokena: {AdressOfToken}\n" +
                 $"Opozvana: {Recalled}");

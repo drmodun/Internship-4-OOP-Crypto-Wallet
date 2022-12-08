@@ -251,7 +251,6 @@ namespace CrytpWallet.Classes.Global
                 if (item.Label == label)
                     return item.Adress;
             }
-            Console.WriteLine("Krivo");
             return Guid.Empty;
         }
         public static FungibleAsset GetFungibleAssetByAdress(Guid adress)
@@ -309,26 +308,70 @@ namespace CrytpWallet.Classes.Global
                 Console.WriteLine("");
             }
         }
-        public static void AdressPrint(Guid adress)
+        public static void AdressPrint(Guid adress, Guid receivingAdress)
         {
             Console.WriteLine("Mogući asseti");
             Console.WriteLine("Fungible asseti:");
             var wallet = GetWalletByAdress(adress.ToString());
-            foreach(var item in wallet.AmountOfAssets)
+            var receivingWallet = GetWalletByAdress(receivingAdress.ToString());
+            var foundFungible = false;
+            var foundNonFungible = false;
+            var allowed = false;
+            foreach (var item in wallet.AmountOfAssets)
             {
                 var asset = GetFungibleAssetByAdress(item.Key);
-                Console.WriteLine($"Fungible asset {asset.Name} ({asset.Label}), kolicina {item.Value} i vrijendost {asset.ValueInDollar}$: {item.Key}");
+                switch (receivingWallet.Type)
+                {
+                    case 1:
+                        if (BitcoinWallet.AllowedAssets.Contains(asset.Adress))
+                            allowed= true;
+                        break;
+                    case 2:
+                        if (EtherumWallet.AllowedAssetsFungible.Contains(asset.Adress))
+                            allowed= true;
+                        break;
+                    case 3:
+                        if (SolanaWallet.AllowedAssetsFungible.Contains(asset.Adress))
+                            allowed= true;
+                            break;
+                }
+                if (allowed)
+                {
+                    Console.WriteLine($"Fungible asset {asset.Name} ({asset.Label}), kolicina {item.Value} i vrijendost {asset.ValueInDollar}$: {item.Key}");
+                    foundFungible= true;
+                }
+                allowed= false;
             }
+            if (!foundFungible)
+                Console.WriteLine("Nije pronađen ni jedan dopušteni fungible asset");
             Console.WriteLine("");
-            Console.WriteLine("NonFungible asseti:");
             if (wallet as DoubleWallet != null)
             {
+                Console.WriteLine("NonFungible asseti:");
                 var walletNft= wallet as DoubleWallet;
                 foreach(var item in walletNft.HeldNFT)
                 {
                     var asset = GetNonFungibleAssetByAdress(item);
-                    Console.WriteLine($"NonFungible asset {asset.Name}, vrijednosti {asset.ValueInFungible} {GetFungibleAssetByAdress(asset.ItsFungible).Label} ili {asset.ValueInDollar}$: {item}");
-                }
+                    switch (receivingWallet.Type)
+                    {
+                        case 2:
+                            if (EtherumWallet.AllowedNonFungible.Contains(asset.Adress))
+                                allowed = true;
+                            break;
+                        case 3:
+                            if (SolanaWallet.AllowedNonFungible.Contains(asset.Adress))
+                                allowed = true;
+                            break;
+                    }
+                    if (allowed)
+                    {
+                        foundNonFungible= true;
+                        Console.WriteLine($"NonFungible asset {asset.Name}, vrijednosti {asset.ValueInFungible} {GetFungibleAssetByAdress(asset.ItsFungible).Label} ili {asset.ValueInDollar}$: {item}");
+                    }
+                    allowed= false;
+                    }
+            if (!foundNonFungible)
+                    Console.WriteLine("Nije dopušten ni jedan dopušteni non fungible asset");
             }
         }
         public static void ReCalculateAllWallets()

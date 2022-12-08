@@ -13,7 +13,7 @@ namespace CrytpWallet.Classes.Wallets
     public sealed  class EtherumWallet : DoubleWallet
     {
         public EtherumWallet() : base() {
-            type = 2;
+            Type = 2;
             
             HeldNFT = new List<Guid>();
         }
