@@ -246,8 +246,8 @@ void CheckWallet()
 
                         Console.WriteLine("Upišite količinu asseta koju želite tranferat");
                         var ammountToTransferTry = Console.ReadLine();
-                        var ammountToTransfer = 0;
-                        int.TryParse(ammountToTransferTry, out ammountToTransfer);
+                        var ammountToTransfer = new Decimal(0);
+                        decimal.TryParse(ammountToTransferTry, out ammountToTransfer);
                         if (ammountToTransfer>item.Value || ammountToTransfer <= 0)
                         {
                             Console.WriteLine("Upisani netočna količina");
@@ -268,7 +268,7 @@ void CheckWallet()
                         userWallet.SendFungible(assetToTransfer, ammountToTransfer);
                         receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
                         found = 1;
-                        Console.WriteLine("Uspješno narpavljen transfer");
+                        Console.WriteLine("Uspješno napravljen transfer");
                         Console.ReadLine();
                         transaction = new FungibleTransaction()
                         {
@@ -330,7 +330,6 @@ void CheckWallet()
                                 userWallet.Transactions.Add(nonFungibleTransaction.Id);
                                 receivingWallet.Transactions.Add(nonFungibleTransaction.Id);
                                 Console.WriteLine("Uspješno napravljen non fungible tranfer");
-                                Console.WriteLine("Pretisinte bilo koju tipku za nastavak");
                                 Console.ReadLine();
                                 found = 1;
                                 break;
@@ -348,7 +347,6 @@ void CheckWallet()
                 if (userWallet.Transactions.Count == 0)
                 {
                     Console.WriteLine("Na tom walletu nije napravljena ni jedna transakcija");
-                    Console.WriteLine("Upišite bilo koju tipku za vratiti se na menu");
                     Console.ReadLine();
                     break;
                 }
@@ -401,8 +399,8 @@ void CheckWallet()
                 if (transactionToRecall as NonFungibleTransaction == null)
                 {
                     var transactionToRecallFungible= transactionToRecall as FungibleTransaction;
-                    sendWallet.SendFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver));
-                    receiveWallet.GetFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (int)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver), false);
+                    sendWallet.SendFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (decimal)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver));
+                    receiveWallet.GetFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (decimal)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver), false);
                     transactionToRecall.Recalled= true;  
                 }
                 //transactionToRecall.Recalled=true;

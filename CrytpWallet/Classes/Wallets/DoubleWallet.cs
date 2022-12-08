@@ -35,8 +35,6 @@ namespace CrytpWallet.Classes.Wallets
 
             foreach (var item in HeldNFT)
             {
-                if (item==Guid.Empty)
-                    Console.WriteLine($"{HeldNFT.IndexOf(item)}");
                 TotalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
                 //Dont like the way I am getting the vlaue here, might have to make it more tidy
             }

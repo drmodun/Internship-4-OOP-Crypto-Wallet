@@ -8,7 +8,7 @@ namespace CrytpWallet.Classes.Wallets
     public abstract class Wallet : IFungible
     {
         public Guid Adress { get; init; }
-        public Dictionary<Guid, int> AmountOfAssets { get; init; }
+        public Dictionary<Guid, decimal> AmountOfAssets { get; init; }
         public List<Guid> Transactions { get; init; }
         public decimal TotalValue { get; protected set; }
         public decimal OldValue { get; protected set; }
@@ -18,7 +18,7 @@ namespace CrytpWallet.Classes.Wallets
         public Wallet()
         {
             Adress = Guid.NewGuid();
-            AmountOfAssets = new Dictionary<Guid, int>();
+            AmountOfAssets = new Dictionary<Guid, decimal>();
             Transactions = new List<Guid>();
             TotalValue = -1;
             OldValue = -1;
@@ -69,27 +69,22 @@ namespace CrytpWallet.Classes.Wallets
             }
             return startingValue;
         }
-        public void GetFungible(FungibleAsset assetToAdd, int amount, bool newToken)
+        public void GetFungible(FungibleAsset assetToAdd, decimal amount, bool newToken)
         {
             if (newToken == true)
             {
-                Console.WriteLine($"{assetToAdd.Adress} {AmountOfAssets.Keys.Count}");
                 AmountOfAssets.Add(assetToAdd.Adress, amount);
             }
             else
             {
-                Console.WriteLine(AmountOfAssets[assetToAdd.Adress]);
                 AmountOfAssets[assetToAdd.Adress] += amount;
-                Console.WriteLine(AmountOfAssets[assetToAdd.Adress]);
-                Console.WriteLine(amount);
                 //TotalValue += amount * assetToAdd.ValueInDollar;
             }
             CalculateValue();
         }
-        public void SendFungible(FungibleAsset assetToRemove, int amount)
+        public void SendFungible(FungibleAsset assetToRemove, decimal amount)
         {
             AmountOfAssets[assetToRemove.Adress] -= amount;
-            //TotalValue -= amount * assetToRemove.ValueInDollar;
             CalculateValue();
             //try handling more things in main or global static classes
         }
