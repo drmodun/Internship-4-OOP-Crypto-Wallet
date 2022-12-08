@@ -35,7 +35,7 @@ namespace CrytpWallet.Classes.Wallets
 
             foreach (var item in HeldNFT)
             {
-                TotalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar;
+                TotalValue += GlobalWallets.GetFungibleAssetByAdress(GlobalWallets.GetNonFungibleAssetByAdress(item).ItsFungible).ValueInDollar*GlobalWallets.GetNonFungibleAssetByAdress(item).ValueInFungible;
                 //Dont like the way I am getting the vlaue here, might have to make it more tidy
             }
             if (TotalValue != startingValue && startingValue!=-1)

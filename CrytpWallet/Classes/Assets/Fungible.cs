@@ -17,7 +17,7 @@ namespace CrytpWallet.Assets
         {
             var old = ValueInDollar;
             Random random = new Random();
-            decimal PriceChange = random.Next(-5, 5)/(decimal)200;
+            decimal PriceChange = random.Next(-500, 500)/(decimal)10000;
             ValueInDollar +=ValueInDollar*PriceChange;
             Console.WriteLine($"Value od {Label} changed from {old}$ to {ValueInDollar}$");
         }

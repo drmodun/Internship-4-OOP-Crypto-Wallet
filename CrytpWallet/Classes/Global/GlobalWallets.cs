@@ -143,7 +143,26 @@ namespace CrytpWallet.Classes.Global
                 new NonFungibleAsset(GetAdressOfFungibleToken("NMC"), new Decimal(0.0000001))
                 {
                     Name="Croatia Flag #2335"
-                }
+                },
+                new NonFungibleAsset(GetAdressOfFungibleToken("DOGE"), new Decimal(100000))
+                {
+                    Name="Diamond #1"
+                },
+                new NonFungibleAsset(GetAdressOfFungibleToken("DOGE"), new Decimal(0.0001))
+                {
+                    Name="Diamond #235"
+                },
+                new NonFungibleAsset(GetAdressOfFungibleToken("SOL"), new Decimal(2432.23))
+                {
+                    Name="Gold"
+                },
+                new NonFungibleAsset(GetAdressOfFungibleToken("SOL"), new Decimal(22.23))
+                {
+                    Name="Iron"
+                },new NonFungibleAsset(GetAdressOfFungibleToken("SOL"), new Decimal(2432000.23))
+                {
+                    Name="Platinum"
+                },
                 //Add 5 more
 
             };
@@ -183,11 +202,17 @@ namespace CrytpWallet.Classes.Global
             AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Blue Ape"));
             AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Red Ape"));
             AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond Helmet"));
+            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond #1"));
+
 
             AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), new Decimal(100));
             AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), new Decimal(1000));
             AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("BNB"), new Decimal(80));
             AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Leather leggings"));
+            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Cryptopunk"));
+            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond #235"));
+
+
 
             AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), new Decimal(1));
             AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), new Decimal(10));
@@ -210,13 +235,17 @@ namespace CrytpWallet.Classes.Global
             AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), new Decimal(200));
             AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("NMC"), new Decimal(200));
             AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("CyberSword"));
-            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Cryptopunk"));
+            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Iron"));
+            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Platinum"));
+
 
             AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), new Decimal(200000));
             AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), new Decimal(20));
             AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), new Decimal(2));
             AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("White Hat"));
             AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Black Hat"));
+            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Gold"));
+
 
 
             AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), new Decimal(2));
@@ -337,7 +366,7 @@ namespace CrytpWallet.Classes.Global
                 }
                 if (allowed)
                 {
-                    Console.WriteLine($"Fungible asset {asset.Name} ({asset.Label}), kolicina {item.Value} i vrijendost {asset.ValueInDollar}$: {item.Key}");
+                    Console.WriteLine($"Fungible asset {asset.Name} ({asset.Label}), kolicina {item.Value} i vrijendost {asset.ValueInDollar} (ukupno {asset.ValueInDollar*item.Value})$: {item.Key}");
                     foundFungible= true;
                 }
                 allowed= false;
