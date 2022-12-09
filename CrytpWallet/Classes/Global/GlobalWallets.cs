@@ -156,6 +156,7 @@ namespace CrytpWallet.Classes.Global
             };
             AllBitcoinWallets = new List<BitcoinWallet>()
             {
+                new BitcoinWallet(),
                 new BitcoinWallet()
                 {
                     AmountOfAssets=new Dictionary<Guid, decimal>{
