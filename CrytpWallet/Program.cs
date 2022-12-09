@@ -4,9 +4,6 @@ using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Classes.Wallets;
 
-
-Console.WriteLine("Hello, World!");
-//main loop
 bool loop=true;
 
 bool DialogOfConfirmation()
@@ -66,7 +63,10 @@ void CreateWallet()
                 GlobalWallets.Wallets.Add(newWallet);
                 newWallet.CalculateValue();
                 Console.Clear() ;
-                Console.WriteLine($"Wallet id {newWallet.Adress} napravljen");
+                var confirmationBitcoin = DialogOfConfirmation();
+                if (!confirmationBitcoin)
+                    return;
+                Console.WriteLine($"Wallet Bitcoin adrese {newWallet.Adress} napravljen");
                 break;
             case "2":
                 var newWalletEtherum = new EtherumWallet() { IsPredefined = false};
@@ -74,6 +74,9 @@ void CreateWallet()
                 GlobalWallets.Wallets.Add(newWalletEtherum);
                 Console.Clear() ;
                 newWalletEtherum.CalculateValue();
+                var confirmationEtherum = DialogOfConfirmation();
+                if (!confirmationEtherum)
+                    return;
                 Console.WriteLine($"Wallet id {newWalletEtherum.Adress} napravljen");
 
                 break;
@@ -83,12 +86,17 @@ void CreateWallet()
                 GlobalWallets.Wallets.Add(newSolanaWallet);
                 newSolanaWallet.CalculateValue();
                 Console.Clear() ;
+                var confirmationSolana = DialogOfConfirmation();
+                if (!confirmationSolana)
+                {
+                    return;
+                }
                 Console.WriteLine($"Wallet id {newSolanaWallet.Adress} napravljen");
 
                 break;
             case "0":
                 return;
-            default: Console.WriteLine("Neispravan input");
+            default: Console.WriteLine("Neispravan input"); Console.ReadLine();
                     break;
         }
         Console.WriteLine("Pretisnite bilo koju tipku za nastavak");
@@ -164,7 +172,7 @@ void CheckWallet()
                 {
                     
                     GlobalWallets.GetFungibleAssetByAdress(item.Key).PrintAsset();
-                    Console.WriteLine($"Vrijednost (ukupna): {GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value}$ ");
+                    Console.WriteLine($"Vrijednost (ukupna): {Decimal.Round(GlobalWallets.GetFungibleAssetByAdress(item.Key).ValueInDollar * item.Value)}$ ");
                     Console.WriteLine($"Količina: {item.Value}");
                     Console.WriteLine(" ");
                 }
@@ -223,125 +231,127 @@ void CheckWallet()
                             break;
                     }
                 }
+                if (receivingWallet.Type != userWallet.Type)
+                {
+                    Console.WriteLine("Nije moguće transferati između ta dva tipa walleta");
+                    Console.ReadLine();
+                    break;
+                }
                 Console.WriteLine("Upišite adresu asseta kojeg želite transferati");
                 Console.WriteLine("");
                 GlobalWallets.AdressPrint(userWallet.Adress, receivingWallet.Adress);
                 Console.WriteLine("");
-                var assetToTransferAdress = Console.ReadLine();
+                var assetToTransferAdressTry = Console.ReadLine();
+                var assetToTransferAdress = Guid.Empty;
+                Guid.TryParse(assetToTransferAdressTry, out assetToTransferAdress);
                 var found = 0;
-                foreach (var item in userWallet.AmountOfAssets)
+                if (userWallet.AmountOfAssets.ContainsKey(assetToTransferAdress))
                 {
-                    if (assetToTransferAdress == item.Key.ToString())
+                    var assetToTransfer = GlobalWallets.GetFungibleAssetByAdress(assetToTransferAdress);
+                    if (!lists[typeReceiver - 1].Contains(assetToTransfer.Adress))
                     {
-                        var assetToTransfer = GlobalWallets.GetFungibleAssetByAdress(item.Key);
-
-                        if (!lists[typeReceiver - 1].Contains(assetToTransfer.Adress))
-                        {
-                            Console.WriteLine("Taj Wallet ne podržava taj fungible asset");
-                            Console.WriteLine("Upišite bilo koju tipku za nastavak");
-                            Console.ReadLine();
-                            found = 2;
-                            break;
-                        }
-
-                        Console.WriteLine("Upišite količinu asseta koju želite tranferat");
-                        var ammountToTransferTry = Console.ReadLine();
-                        var ammountToTransfer = new Decimal(0);
-                        decimal.TryParse(ammountToTransferTry, out ammountToTransfer);
-                        if (ammountToTransfer>item.Value || ammountToTransfer <= 0)
-                        {
-                            Console.WriteLine("Upisani netočna količina");
-                            Console.WriteLine("Upišite bilo koju tipku za nastavak");
-                            Console.ReadLine();
-                            found = 2;
-                            break;
-                        }
-                        var transaction = new FungibleTransaction()
-                        {
-                            Sender = userWallet.Adress,
-                            Receiver = receivingWallet.Adress
-                        };
-                        var confirmationTransactionRecall = DialogOfConfirmation();
-                        if (!confirmationTransactionRecall)
-                            break;
-                        assetToTransfer.UpdateValue();
-                        userWallet.SendFungible(assetToTransfer, ammountToTransfer);
-                        receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
-                        found = 1;
-                        Console.WriteLine("Uspješno napravljen transfer");
+                        Console.WriteLine("Taj Wallet ne podržava taj fungible asset");
+                        Console.WriteLine("Upišite bilo koju tipku za nastavak");
                         Console.ReadLine();
-                        transaction = new FungibleTransaction()
-                        {
-                            AdressOfToken = assetToTransfer.Adress,
-                            Sender = userWallet.Adress,
-                            Receiver = receivingWallet.Adress,
-                            TimeOfTransaction = DateTime.Now,
-                            StartBalanceReceiver = receivingWallet.AmountOfAssets[assetToTransfer.Adress]-ammountToTransfer,
-                            EndBalanceReceiver = receivingWallet.AmountOfAssets[assetToTransfer.Adress],
-                            StartBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress]+ammountToTransfer,
-                            EndBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress],
-                        };
-                        GlobalWallets.AllTransactions.Add(transaction);
-                        userWallet.Transactions.Add(transaction.Id);
-                        receivingWallet.Transactions.Add(transaction.Id);
-                        //switch typewith enum
+                        found = 2;
                         break;
                     }
+
+                    Console.WriteLine("Upišite količinu asseta koju želite tranferat");
+                    var ammountToTransferTry = Console.ReadLine();
+                    var ammountToTransfer = new Decimal(0);
+                    decimal.TryParse(ammountToTransferTry, out ammountToTransfer);
+                    if (ammountToTransfer > userWallet.AmountOfAssets[assetToTransferAdress] || ammountToTransfer <= 0)
+                    {
+                        Console.WriteLine("Upisana netočna količina");
+                        Console.ReadLine();
+                        break;
+                    }
+                    var transaction = new FungibleTransaction()
+                    {
+                        Sender = userWallet.Adress,
+                        Receiver = receivingWallet.Adress
+                    };
+                    var confirmationTransaction = DialogOfConfirmation();
+                    Console.WriteLine("Izabrani asse je fungible asset "+assetToTransfer.Name+" količine "+ammountToTransfer.ToString());
+                    if (!confirmationTransaction)
+                    {
+                        break;
+                    }
+                    assetToTransfer.UpdateValue();
+                    userWallet.SendFungible(assetToTransfer, ammountToTransfer);
+                    receivingWallet.GetFungible(assetToTransfer, ammountToTransfer, !receivingWallet.AmountOfAssets.ContainsKey(assetToTransfer.Adress));
+                    found = 1;
+                    Console.WriteLine("Uspješno napravljen transfer");
+                    Console.ReadLine();
+                    transaction = new FungibleTransaction()
+                    {
+                        AdressOfToken = assetToTransfer.Adress,
+                        Sender = userWallet.Adress,
+                        Receiver = receivingWallet.Adress,
+                        TimeOfTransaction = DateTime.Now,
+                        StartBalanceReceiver = receivingWallet.AmountOfAssets[assetToTransfer.Adress] - ammountToTransfer,
+                        EndBalanceReceiver = receivingWallet.AmountOfAssets[assetToTransfer.Adress],
+                        StartBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress] + ammountToTransfer,
+                        EndBalanceSender = userWallet.AmountOfAssets[assetToTransfer.Adress],
+                    };
+                    GlobalWallets.AllTransactions.Add(transaction);
+                    userWallet.Transactions.Add(transaction.Id);
+                    receivingWallet.Transactions.Add(transaction.Id);
+                    //switch typewith enum
+                    break;
                 }
-                if (found == 2)
+                else if (userWallet as DoubleWallet == null)
                 {
-                    Console.WriteLine("Wallet ili token nije pronađen");
+                    Console.WriteLine("Nije pronađen taj asset");
                     Console.ReadLine();
                     break;
                 }
                 else
                 {
                     DoubleWallet userWalletNFT = userWallet as DoubleWallet;
-                    DoubleWallet receivingWalletNFT= receivingWallet as DoubleWallet;
-                    if (userWalletNFT != null && receivingWallet != null)
+                    DoubleWallet receivingWalletNFT = receivingWallet as DoubleWallet;
+                    if (userWalletNFT.HeldNFT.Contains(assetToTransferAdress) && lists[typeReceiver + 1].Contains(assetToTransferAdress))
                     {
-                        foreach (var item in userWalletNFT.HeldNFT)
+                        var assetToTransfer = GlobalWallets.GetNonFungibleAssetByAdress(assetToTransferAdress);
+
+                        if (!lists[typeReceiver + 1].Contains(assetToTransfer.Adress))
                         {
-                            if (item.ToString() == assetToTransferAdress)
-                            {
-                                var assetToTransfer = GlobalWallets.GetNonFungibleAssetByAdress(item);
-
-                                if (!lists[typeReceiver + 1].Contains(assetToTransfer.Adress))
-                                {
-                                    Console.WriteLine("Taj wallet ne podržava taj nft");
-                                    Console.ReadLine();
-                                    break;
-                                }
-                                var confirmationNFT = DialogOfConfirmation();
-                                if (!confirmationNFT)
-                                    break;
-                                var nonFungibleTransaction = new NonFungibleTransaction()
-                                {
-                                    AdressOfNFT = assetToTransfer.Adress,
-                                    Sender = userWallet.Adress,
-                                    Receiver = receivingWallet.Adress,
-
-                                };
-                                GlobalWallets.AllTransactions.Add(nonFungibleTransaction);
-                                GlobalWallets.GetFungibleAssetByAdress(assetToTransfer.ItsFungible).UpdateValue();
-                                assetToTransfer.UpdateValue();
-                                userWalletNFT.SendNFT(assetToTransfer);
-                                receivingWalletNFT.GetNFT(assetToTransfer);
-                                userWallet.Transactions.Add(nonFungibleTransaction.Id);
-                                receivingWallet.Transactions.Add(nonFungibleTransaction.Id);
-                                Console.WriteLine("Uspješno napravljen non fungible tranfer");
-                                Console.ReadLine();
-                                found = 1;
-                                break;
-                            }
-                        }
-                        if (found==0){
-                            Console.WriteLine("Nije pronađen ni jedan token sa tom adresom");
+                            Console.WriteLine("Taj wallet ne podržava taj nft");
                             Console.ReadLine();
+                            break;
                         }
+                        Console.WriteLine("Izabrani asset je nonfungible asset "+assetToTransfer.Name);
+                        var confirmationNFT = DialogOfConfirmation();
+                        if (!confirmationNFT)
+                            break;
+                        var nonFungibleTransaction = new NonFungibleTransaction()
+                        {
+                            AdressOfNFT = assetToTransfer.Adress,
+                            Sender = userWallet.Adress,
+                            Receiver = receivingWallet.Adress,
+
+                        };
+                        GlobalWallets.AllTransactions.Add(nonFungibleTransaction);
+                        GlobalWallets.GetFungibleAssetByAdress(assetToTransfer.ItsFungible).UpdateValue();
+                        assetToTransfer.UpdateValue();
+                        userWalletNFT.SendNFT(assetToTransfer);
+                        receivingWalletNFT.GetNFT(assetToTransfer);
+                        userWallet.Transactions.Add(nonFungibleTransaction.Id);
+                        receivingWallet.Transactions.Add(nonFungibleTransaction.Id);
+                        Console.WriteLine("Uspješno napravljen non fungible tranfer");
+                        Console.ReadLine();
+                        found = 1;
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Nije pronađen ni jedan token sa tom adresom");
+                        Console.ReadLine();
+                        break;
                     }
                 }
-                break;
+                   
             case "3":
                 Console.Clear();
                 if (userWallet.Transactions.Count == 0)
@@ -384,17 +394,16 @@ void CheckWallet()
                     break;
                 Wallet sendWallet = null;
                 Wallet receiveWallet = null;
+                
                 if (userWallet.Adress != transactionToRecall.Sender)
                 {
-                    sendWallet= userWallet;
-                    receiveWallet= GlobalWallets.GetWalletByAdress(transactionToRecall.Sender.ToString());
+                    Console.WriteLine("Morate opozvati reakciju s walleta koji ju je napravio");
+                    Console.ReadLine();
+                    break;
+                }
 
-                }
-                else
-                {
-                    receiveWallet = userWallet;
-                    sendWallet = GlobalWallets.GetWalletByAdress(transactionToRecall.Receiver.ToString());
-                }
+                receiveWallet = userWallet;
+                sendWallet = GlobalWallets.GetWalletByAdress(transactionToRecall.Receiver.ToString());
 
                 if (transactionToRecall as NonFungibleTransaction == null)
                 {
@@ -403,7 +412,6 @@ void CheckWallet()
                     receiveWallet.GetFungible(GlobalWallets.GetFungibleAssetByAdress(transactionToRecallFungible.AdressOfToken), (decimal)(transactionToRecallFungible.EndBalanceReceiver - transactionToRecallFungible.StartBalanceReceiver), false);
                     transactionToRecall.Recalled= true;  
                 }
-                //transactionToRecall.Recalled=true;
                 else
                 {
                     var transactionToRecallNonFungible = transactionToRecall as NonFungibleTransaction;

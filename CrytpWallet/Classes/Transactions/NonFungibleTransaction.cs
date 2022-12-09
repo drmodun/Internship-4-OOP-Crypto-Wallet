@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CrytpWallet.Classes.Global;
 
 namespace CrytpWallet.Classes.Transactions
 {
@@ -15,7 +11,8 @@ namespace CrytpWallet.Classes.Transactions
         {
             base.PrintTransaction();
             Console.WriteLine(
-                $"Ime fungible tokena: {AdressOfNFT}\n" +
+                $"Adresa nonfungible tokena: {AdressOfNFT}\n" +
+                $"Ime nonfungible tokena {GlobalWallets.GetNonFungibleAssetByAdress(AdressOfNFT).Name}" +
                 $"Opozvana: {Recalled}");
         }
 

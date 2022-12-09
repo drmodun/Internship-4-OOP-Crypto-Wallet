@@ -45,10 +45,13 @@ namespace CrytpWallet.Classes.Wallets
             else
             {
 
-                changePrint = $"\nTotalna promjena vrijednosti1 {((TotalValue - OldValue) / OldValue) * 100}%";
+                changePrint = $"\nTotalna promjena vrijednosti1 {Decimal.Round(((TotalValue - OldValue) / OldValue) * 100, 4)}%";
+                if (Decimal.Round(((TotalValue - OldValue) / OldValue) * 100, 4).ToString()=="0,0000")
+                    changePrint = $"\nTotalna promjena vrijednosti1 0,0001%";
+
             }
             Console.WriteLine($"Adresa walleta: {Adress}" +
-                $"\nTotalna vrijednost: {TotalValue}" +
+                $"\nTotalna vrijednost: {Decimal.Round(TotalValue, 4)}" +
                 $"{changePrint}");
             OldValue = TotalValue;
             HasChanged = false;
@@ -90,14 +93,15 @@ namespace CrytpWallet.Classes.Wallets
         }
         public void PrintAllTransactions()
         {
-            foreach(var item in Transactions)
+            for (int i=Transactions.Count()-1; i>=0; i--)
             {
-                var transaction = GlobalWallets.GetTransactionById(item);
+                var transactionAdress = Transactions[i];
+                var transaction = GlobalWallets.GetTransactionById(transactionAdress);
                 if (transaction as FungibleTransaction!=null)
                 {
                     var transactionFungible= transaction as FungibleTransaction;
                     transactionFungible.PrintTransaction();
-                    return;
+                    continue;
                 }
                 ((NonFungibleTransaction)transaction).PrintTransaction();
                 Console.WriteLine("");

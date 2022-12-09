@@ -1,11 +1,4 @@
-﻿using CrytpWallet.Classes.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CrytpWallet.Assets
+﻿namespace CrytpWallet.Assets
 {
     public abstract class Asset 
     {
@@ -17,7 +10,7 @@ namespace CrytpWallet.Assets
         {
             Console.WriteLine($"Adresa asseta: {Adress}\n" +
                 $"Ime asseta: {Name}\n" +
-                $"Vrijednost: {ValueInDollar} $");
+                $"Vrijednost: {Decimal.Round(ValueInDollar, 4)} $");
         }
         public Asset()
         {

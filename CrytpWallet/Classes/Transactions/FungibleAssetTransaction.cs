@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CrytpWallet.Classes.Global;
 
 namespace CrytpWallet.Classes.Transactions
 {
@@ -18,7 +14,8 @@ namespace CrytpWallet.Classes.Transactions
         {
             base.PrintTransaction();
             Console.WriteLine($"Količina: {EndBalanceReceiver-StartBalanceReceiver}\n" +
-                $"Ime fungible tokena: {AdressOfToken}\n" +
+                $"Adresa fungible tokena: {AdressOfToken}\n" +
+                $"Ime fungible tokena {GlobalWallets.GetFungibleAssetByAdress(AdressOfToken).Name}" +
                 $"Opozvana: {Recalled}");
         }
 

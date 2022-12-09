@@ -1,12 +1,5 @@
 ﻿using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
-using CrytpWallet.Classes.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.NetworkInformation;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Wallets
 {
@@ -40,7 +33,6 @@ namespace CrytpWallet.Classes.Wallets
         }
         public static List<Guid> AllowedAssetsFungible { get; private set; }
         public static List<Guid> AllowedNonFungible { get; private set; }
-        //public List<Guid> HeldNFT { get; init; }
         
         public override void PrintWallet()
         {

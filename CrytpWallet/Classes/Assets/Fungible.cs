@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CrytpWallet.Assets
 {
     public sealed class FungibleAsset : Asset  
@@ -17,15 +11,15 @@ namespace CrytpWallet.Assets
         {
             var old = ValueInDollar;
             Random random = new Random();
-            decimal PriceChange = random.Next(-500, 500)/(decimal)10000;
+            decimal PriceChange = random.Next(-250, 250)/(decimal)10000;
             ValueInDollar +=ValueInDollar*PriceChange;
-            Console.WriteLine($"Value od {Label} changed from {old}$ to {ValueInDollar}$");
+            Console.WriteLine($"Vrijednost od {Label} changed from {Decimal.Round(old, 4)}$ to {Decimal.Round(ValueInDollar, 4)}$");
         }
         public override void PrintAsset()
         {
             base.PrintAsset();
             Console.WriteLine($"Oznaka: {Label}\n" +
-                $"Mijenjanje vrijednosti (jednog): {((ValueInDollar - OldValueInDollar) / OldValueInDollar )*100}%");
+                $"Mijenjanje vrijednosti (jednog): {Decimal.Round(((ValueInDollar - OldValueInDollar) / OldValueInDollar )*100,2)}%");
             OldValueInDollar = ValueInDollar;
 
         }

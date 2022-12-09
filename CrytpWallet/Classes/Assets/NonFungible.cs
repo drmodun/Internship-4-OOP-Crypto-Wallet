@@ -1,11 +1,4 @@
 ﻿using CrytpWallet.Classes.Global;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrytpWallet.Assets
 {
@@ -18,7 +11,6 @@ namespace CrytpWallet.Assets
             ItsFungible = itsFungible;
             if (GlobalWallets.GetFungibleAssetByAdress(itsFungible) == null)
             {
-                Console.WriteLine("Wrong");
                 return;
             }
             ValueInDollar = GlobalWallets.GetFungibleAssetByAdress(itsFungible).ValueInDollar*valueInFungible;
@@ -37,7 +29,7 @@ namespace CrytpWallet.Assets
             var token = GlobalWallets.AllFungibleAssets.Find(x => x.Adress == ItsFungible);
             base.PrintAsset();
             Console.WriteLine($"Vrijednost u fungible assetu: {ValueInFungible} {token.Label}\n" +
-                $"Mijenjanje vrijednosti: {((ValueInDollar - OldValueInDollar) /  ValueInDollar)*100}%");
+                $"Mijenjanje vrijednosti: {Decimal.Round(((ValueInDollar - OldValueInDollar) /  ValueInDollar)*100, 4)}%");
             OldValueInDollar = ValueInDollar;
         }
     }

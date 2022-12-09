@@ -15,19 +15,16 @@ namespace CrytpWallet.Classes.Wallets
         public DoubleWallet() : base() { 
 
         }
-        //public abstract List<DoubleWallet> GetWallets();
         public List<Guid> HeldNFT { get; init; }
         public void GetNFT(NonFungibleAsset assetToAdd)
         {
             HeldNFT.Add(assetToAdd.Adress);
             TotalValue += assetToAdd.ValueInDollar;
-            //Transactions.Add(TransactionAdress);
         }
         public void SendNFT(NonFungibleAsset assetToRemove)
         {
             HeldNFT.Remove(assetToRemove.Adress);
             TotalValue -= assetToRemove.ValueInDollar;
-            //Transactions.Add(TransactionAdress);
         }
         public override decimal CalculateValue()
         {
