@@ -1,12 +1,6 @@
 ﻿using CrytpWallet.Assets;
-using CrytpWallet.Classes.Interfaces;
 using CrytpWallet.Classes.Transactions;
 using CrytpWallet.Classes.Wallets;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CrytpWallet.Classes.Global
 {
@@ -68,8 +62,8 @@ namespace CrytpWallet.Classes.Global
                 Sender = userWallet.Adress,
                 Receiver = receivingWallet.Adress
             };
-            var confirmationTransaction = DialogOfConfirmation();
             Console.WriteLine("Izabrani asset je fungible asset " + assetToTransfer.Name + " količine " + ammountToTransfer.ToString());
+            var confirmationTransaction = DialogOfConfirmation();
             if (!confirmationTransaction)
             {
                 return;

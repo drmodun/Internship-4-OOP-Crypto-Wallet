@@ -101,6 +101,7 @@ namespace CrytpWallet.Classes.Wallets
                 {
                     var transactionFungible= transaction as FungibleTransaction;
                     transactionFungible.PrintTransaction();
+                    Console.WriteLine("");
                     continue;
                 }
                 ((NonFungibleTransaction)transaction).PrintTransaction();

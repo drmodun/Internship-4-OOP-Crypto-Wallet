@@ -156,21 +156,30 @@ namespace CrytpWallet.Classes.Global
             };
             AllBitcoinWallets = new List<BitcoinWallet>()
             {
-                new BitcoinWallet(),
-                new BitcoinWallet(),
-                new BitcoinWallet(),
+                new BitcoinWallet()
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("BTC"), new Decimal(20) },
+                        { GetAdressOfFungibleToken("GRC"), new Decimal(20) },
+                        { GetAdressOfFungibleToken("AUR"), new Decimal(20) }
+                    }
+                },
+                new BitcoinWallet(){
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("BTC"), new Decimal(20) },
+                        { GetAdressOfFungibleToken("XRP"), new Decimal(10) },
+                        { GetAdressOfFungibleToken("GRC"), new Decimal(2) }
+                    }
+                },
+                new BitcoinWallet()
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("BTC"), new Decimal(20.33) },
+                        { GetAdressOfFungibleToken("XRP"), new Decimal(9.99) },
+                        { GetAdressOfFungibleToken("GRC"), new Decimal(123.123) }
+                    }
+                },
             };
-            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), new Decimal(20));
-            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), new Decimal(20));
-            AllBitcoinWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("AUR"), new Decimal(20));
-
-            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), new Decimal(2));
-            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), new Decimal(20));
-            AllBitcoinWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), new Decimal(10));
-
-            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("BTC"), new Decimal(20.33));
-            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), new Decimal(9.99));
-            AllBitcoinWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("AUR"), new Decimal(123.123));
 
             AllBitcoinWallets[0].CalculateValue();
             AllBitcoinWallets[1].CalculateValue();
@@ -178,35 +187,50 @@ namespace CrytpWallet.Classes.Global
 
             AllEtherumWallets = new List<EtherumWallet>()
             {
-                new EtherumWallet(),
-                new EtherumWallet(),
+                new EtherumWallet(){
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("ETH"), new Decimal(10.1)},
+                        { GetAdressOfFungibleToken("DOGE"), new Decimal(500.5)},
+                        { GetAdressOfFungibleToken("BNB"), new Decimal(9.99)}
+                    },
+                    HeldNFT= new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("Red Ape"),
+                        GetAdressOfNonFungibleToken("Blue Ape"),
+                        GetAdressOfNonFungibleToken("Diamond Helmet"),
+                        GetAdressOfNonFungibleToken("Diamond #1")
+
+                    }
+                },
                 new EtherumWallet()
-            };
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("ETH"), new Decimal(101.36)},
+                        { GetAdressOfFungibleToken("GRC"), new Decimal(1000.78)},
+                        { GetAdressOfFungibleToken("BNB"), new Decimal(80.5) }
+                    },
+                    HeldNFT= new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("Leather leggings"),
+                        GetAdressOfNonFungibleToken("Cryptopunk"),
+                        GetAdressOfNonFungibleToken("Diamond #235"),
+                        GetAdressOfNonFungibleToken("HackSilver")
 
-            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), new Decimal(10.1));
-            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), new Decimal(500.5));
-            AllEtherumWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("BNB"), new Decimal(9.99));
-            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Red Ape"));
-            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Blue Ape"));
-            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Red Ape"));
-            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond Helmet"));
-            AllEtherumWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond #1"));
+                    }
+                },
+                new EtherumWallet(){
+                    AmountOfAssets=new Dictionary<Guid, decimal>{
+                        { GetAdressOfFungibleToken("ETH"), new Decimal(1)},
+                        { GetAdressOfFungibleToken("XRP"), new Decimal(10)},
+                        { GetAdressOfFungibleToken("DOGE"), new Decimal(100000) }
+                    },
+                    HeldNFT= new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("Copper Axe"),
+                        GetAdressOfNonFungibleToken("Coin"),
 
-
-            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), new Decimal(101.36));
-            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("GRC"), new Decimal(1000.78));
-            AllEtherumWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("BNB"), new Decimal(80.5));
-            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Leather leggings"));
-            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Cryptopunk"));
-            AllEtherumWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Diamond #235"));
-
-
-
-            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("ETH"), new Decimal(1));
-            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("XRP"), new Decimal(10));
-            AllEtherumWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), new Decimal(100000));
-            AllEtherumWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Copper Axe"));
-            AllEtherumWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Coin"));
+                    }
+            } };
 
             AllEtherumWallets[0].CalculateValue();
             AllEtherumWallets[1].CalculateValue();
@@ -214,35 +238,61 @@ namespace CrytpWallet.Classes.Global
 
             AllSolanaWallets = new List<SolanaWallet>()
             {
-                new SolanaWallet(),
-                new SolanaWallet(),
                 new SolanaWallet()
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>
+                    {
+                        { GetAdressOfFungibleToken("SOL"), new Decimal(200.90)},
+                        {GetAdressOfFungibleToken("LTC"), new Decimal(200.43) },
+                        {GetAdressOfFungibleToken("NMC"), new Decimal(200.21) }
+
+                    },
+                    HeldNFT= new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("CyberSword"),
+                        GetAdressOfNonFungibleToken("Iron"),
+                        GetAdressOfNonFungibleToken("Platinum")
+                    }
+
+                },
+                new SolanaWallet()
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>
+                    {
+                        {GetAdressOfFungibleToken("SOL"), new Decimal(200000.67) },
+                        { GetAdressOfFungibleToken("LTC"), new Decimal(20.82)},
+                        {GetAdressOfFungibleToken("DOGE"), new Decimal(2.12) }
+                    },
+                    HeldNFT= new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("White Hat"),
+                        GetAdressOfNonFungibleToken("Black Hat"),
+                        GetAdressOfNonFungibleToken("Gold")
+                    }
+                    
+                },
+                new SolanaWallet()
+                {
+                    AmountOfAssets=new Dictionary<Guid, decimal>
+                    {
+                        {GetAdressOfFungibleToken("SOL"), new Decimal(2.1) },
+                        {GetAdressOfFungibleToken("DOGE"), new Decimal(2000000.3) },
+                        {GetAdressOfFungibleToken("NMC"), new Decimal(2.91) }
+
+                    },
+                    HeldNFT=new List<Guid>()
+                    {
+                        GetAdressOfNonFungibleToken("Croatia Flag #1"),
+                        GetAdressOfNonFungibleToken("Croatia Flag #231"),
+                        GetAdressOfNonFungibleToken("Croatia Flag #2335")
+                    }
+                }
             };
 
-            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), new Decimal(200.90));
-            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), new Decimal(200.43));
-            AllSolanaWallets[0].AmountOfAssets.Add(GetAdressOfFungibleToken("NMC"), new Decimal(200.21));
-            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("CyberSword"));
-            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Iron"));
-            AllSolanaWallets[0].HeldNFT.Add(GetAdressOfNonFungibleToken("Platinum"));
-
-
-            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), new Decimal(200000.67));
-            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("LTC"), new Decimal(20.82));
-            AllSolanaWallets[1].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), new Decimal(2.12));
-            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("White Hat"));
-            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Black Hat"));
-            AllSolanaWallets[1].HeldNFT.Add(GetAdressOfNonFungibleToken("Gold"));
 
 
 
-            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("SOL"), new Decimal(2.1));
-            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("DOGE"), new Decimal(2000000.3));
-            AllSolanaWallets[2].AmountOfAssets.Add(GetAdressOfFungibleToken("NMC"), new Decimal(2.91));
-            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #1"));
-            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #231"));
-            AllSolanaWallets[2].HeldNFT.Add(GetAdressOfNonFungibleToken("Croatia Flag #2335"));
-
+            
             AllSolanaWallets[0].CalculateValue();
             AllSolanaWallets[1].CalculateValue();
             AllSolanaWallets[2].CalculateValue();

@@ -15,7 +15,6 @@ namespace CrytpWallet.Classes.Wallets
         public EtherumWallet() : base() {
             Type = 2;
             
-            HeldNFT = new List<Guid>();
         }
         static EtherumWallet()
         {
