@@ -40,7 +40,6 @@ namespace CrytpWallet.Classes.Wallets
         }
         public static List<Guid> AllowedAssetsFungible { get; private set; }
         public static List<Guid> AllowedNonFungible { get; private set; }
-        //public List<Guid> HeldNFT { get; init; }
         
         public override void PrintWallet()
         {

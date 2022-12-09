@@ -33,7 +33,9 @@ void CreateWallet()
             "\n2 - Etherum Wallet" +
             "\n3 - Solana Wallet" +
             "\n0 - Main Menu");
+
         var choice = Console.ReadLine();
+
         switch (choice){
             case "1":
                 var newWallet = new BitcoinWallet() { IsPredefined = false };
@@ -46,6 +48,7 @@ void CreateWallet()
                     return;
                 Console.WriteLine($"Wallet Bitcoin adrese {newWallet.Adress} napravljen");
                 break;
+
             case "2":
                 var newWalletEtherum = new EtherumWallet() { IsPredefined = false};
                 GlobalWallets.AllEtherumWallets.Add(newWalletEtherum);
@@ -58,6 +61,7 @@ void CreateWallet()
                 Console.WriteLine($"Wallet id {newWalletEtherum.Adress} napravljen");
 
                 break;
+
             case "3":
                 var newSolanaWallet = new SolanaWallet() { IsPredefined = false };
                 GlobalWallets.AllSolanaWallets.Add(newSolanaWallet);
@@ -72,10 +76,12 @@ void CreateWallet()
                 Console.WriteLine($"Wallet id {newSolanaWallet.Adress} napravljen");
 
                 break;
+
             case "0":
                 return;
-            default: Console.WriteLine("Neispravan input"); Console.ReadLine();
-                    break;
+            default: 
+                Console.WriteLine("Neispravan input"); Console.ReadLine();
+                break;
         }
         Console.WriteLine("Pretisnite bilo koju tipku za nastavak");
         Console.ReadLine();
@@ -97,7 +103,9 @@ void CheckWallet()
             "\n2 - Transfer" +
             "\n3 - Povijest transakcija" +
             "\n0 - Main Menu");
+
         var choice = Console.ReadLine();
+
         switch (choice)
         {
             case "1":
@@ -107,13 +115,19 @@ void CheckWallet()
             case "2":
                 GlobalUserFunctions.UserTransaction(userWallet);
                 break;
+
             case "3":
                GlobalUserFunctions.PrintAndChooseTransaction(userWallet);
                 break;
+
             case "0":
                 loop=0;
                 break;
-            default: Console.WriteLine("Nije upisan valjani input");Console.ReadLine();break;
+
+            default: 
+                Console.WriteLine("Nije upisan valjani input");
+                Console.ReadLine();
+                break;
         }
 
         }

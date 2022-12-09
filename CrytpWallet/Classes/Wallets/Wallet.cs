@@ -50,6 +50,7 @@ namespace CrytpWallet.Classes.Wallets
                     changePrint = $"\nTotalna promjena vrijednosti1 +/-0,0001%";
 
             }
+
             Console.WriteLine($"Adresa walleta: {Adress}" +
                 $"\nTotalna vrijednost: {Decimal.Round(TotalValue, 4)}" +
                 $"{changePrint}");
@@ -59,7 +60,6 @@ namespace CrytpWallet.Classes.Wallets
         public virtual decimal CalculateValue()
         {
             var startingValue = TotalValue;
-            //OldValue = TotalValue;
             TotalValue = 0;
             foreach (var item in AmountOfAssets)
             {
@@ -81,7 +81,6 @@ namespace CrytpWallet.Classes.Wallets
             else
             {
                 AmountOfAssets[assetToAdd.Adress] += amount;
-                //TotalValue += amount * assetToAdd.ValueInDollar;
             }
             CalculateValue();
         }
@@ -89,7 +88,6 @@ namespace CrytpWallet.Classes.Wallets
         {
             AmountOfAssets[assetToRemove.Adress] -= amount;
             CalculateValue();
-            //try handling more things in main or global static classes
         }
         public void PrintAllTransactions()
         {
