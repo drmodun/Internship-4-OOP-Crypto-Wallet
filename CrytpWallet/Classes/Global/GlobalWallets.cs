@@ -11,14 +11,12 @@ namespace CrytpWallet.Classes.Global
         public static List<EtherumWallet> AllEtherumWallets { get; private set; }
         public static List<SolanaWallet> AllSolanaWallets { get; private set;  }
 
-        //public static List<Asset> AllAssets { get; private set; }
         public static List<FungibleAsset> AllFungibleAssets { get; private set; }
         public static List<NonFungibleAsset> AllNonFungibleAssets { get; private set; }
         public static List<Transaction> AllTransactions { get; private set; }
         static GlobalWallets()
         {
             
-            //AllAssets = new List<Asset>();
             AllTransactions= new List<Transaction>();
             AllFungibleAssets = new List<FungibleAsset>()
             {
@@ -154,9 +152,7 @@ namespace CrytpWallet.Classes.Global
                 },new NonFungibleAsset(GetAdressOfFungibleToken("SOL"), new Decimal(2432000.23))
                 {
                     Name="Platinum"
-                },
-                //Add 5 more
-
+                }
             };
             AllBitcoinWallets = new List<BitcoinWallet>()
             {
@@ -313,20 +309,6 @@ namespace CrytpWallet.Classes.Global
             return null;
         }
 
-        //For debugging sake, will most likely delete later
-        public static void PrintAll()
-        {
-            foreach (var item in AllFungibleAssets)
-            {
-                item.PrintAsset();
-                Console.WriteLine("");
-            }
-            foreach (var item in AllNonFungibleAssets)
-            {
-                item.PrintAsset();
-                Console.WriteLine("");
-            }
-        }
         public static void AdressPrint(Guid adress, Guid receivingAdress)
         {
             Console.WriteLine("Mogući asseti");
