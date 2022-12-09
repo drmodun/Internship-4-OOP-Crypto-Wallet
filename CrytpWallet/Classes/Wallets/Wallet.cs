@@ -47,7 +47,7 @@ namespace CrytpWallet.Classes.Wallets
 
                 changePrint = $"\nTotalna promjena vrijednosti1 {Decimal.Round(((TotalValue - OldValue) / OldValue) * 100, 4)}%";
                 if (Decimal.Round(((TotalValue - OldValue) / OldValue) * 100, 4).ToString()=="0,0000")
-                    changePrint = $"\nTotalna promjena vrijednosti1 0,0001%";
+                    changePrint = $"\nTotalna promjena vrijednosti1 +/-0,0001%";
 
             }
             Console.WriteLine($"Adresa walleta: {Adress}" +
