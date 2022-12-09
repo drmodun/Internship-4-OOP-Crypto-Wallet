@@ -338,6 +338,7 @@ namespace CrytpWallet.Classes.Global
                     return item.Adress;
                 }
             }
+            Console.WriteLine(label);
             return Guid.Empty;
         }
         public static NonFungibleAsset GetNonFungibleAssetByAdress(Guid adress)

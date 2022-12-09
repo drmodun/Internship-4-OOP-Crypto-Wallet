@@ -1,19 +1,13 @@
 ﻿using CrytpWallet.Assets;
 using CrytpWallet.Classes.Global;
 using CrytpWallet.Classes.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace CrytpWallet.Classes.Wallets
 {
     public abstract class DoubleWallet : Wallet, INonFungible
     {
-        public DoubleWallet() : base() { 
-
+        public DoubleWallet() : base() {
+            HeldNFT = new List<Guid>();
         }
         public List<Guid> HeldNFT { get; init; }
         public void GetNFT(NonFungibleAsset assetToAdd)
